@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HonestBroker - Buy & Sell Properties</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>HonestBroker</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#list-property">List Property</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <button id="loginBtn" class="btn btn-secondary btn-small">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="signupBtn" class="btn btn-primary btn-small">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                    <div id="userMenu" class="user-menu" style="display: none;">
+                        <button class="btn btn-secondary btn-small">
+                            <i class="fas fa-user"></i> <span id="userName"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="#" id="myPropertiesLink"><i class="fas fa-home"></i> My Properties</a>
+                            <a href="#" id="profileLink"><i class="fas fa-user-cog"></i> Profile</a>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h2>Find Your Dream Home</h2>
+            <p>Browse thousands of properties or list your own</p>
+            <div class="hero-buttons">
+                <a href="#properties" class="btn btn-primary">Browse Properties</a>
+                <a href="#list-property" class="btn btn-secondary">List Your Property</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section id="properties" class="properties-section">
+        <div class="container">
+            <h2 class="section-title">Available Properties</h2>
+            
+            <!-- Search and Filter Bar -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by location, title, or description...">
+                </div>
+                <div class="filters">
+                    <select id="typeFilter">
+                        <option value="all">All Types</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                        <option value="villa">Villa</option>
+                        <option value="land">Land</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="all">All Prices</option>
+                        <option value="0-100000">Under $100,000</option>
+                        <option value="100000-300000">$100,000 - $300,000</option>
+                        <option value="300000-500000">$300,000 - $500,000</option>
+                        <option value="500000-1000000">$500,000 - $1,000,000</option>
+                        <option value="1000000-9999999999">Over $1,000,000</option>
+                    </select>
+                    <button id="clearFilters" class="btn btn-clear">Clear Filters</button>
+                </div>
+            </div>
+
+            <!-- Properties Grid -->
+            <div id="propertiesGrid" class="properties-grid">
+                <!-- Properties will be dynamically inserted here -->
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>No properties found matching your criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- List Property Section -->
+    <section id="list-property" class="list-property-section">
+        <div class="container">
+            <h2 class="section-title">List Your Property</h2>
+            <div class="form-container">
+                <form id="propertyForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="propertyTitle">Property Title *</label>
+                            <input type="text" id="propertyTitle" required placeholder="e.g., Beautiful 3BR House">
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyType">Property Type *</label>
+                            <select id="propertyType" required>
+                                <option value="">Select Type</option>
+                                <option value="house">House</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="condo">Condo</option>
+                                <option value="villa">Villa</option>
+                                <option value="land">Land</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="propertyPrice">Price ($) *</label>
+                            <input type="number" id="propertyPrice" required placeholder="250000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyLocation">Location *</label>
+                            <input type="text" id="propertyLocation" required placeholder="e.g., New York, NY">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="propertyBedrooms">Bedrooms *</label>
+                            <input type="number" id="propertyBedrooms" required placeholder="3" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyBathrooms">Bathrooms *</label>
+                            <input type="number" id="propertyBathrooms" required placeholder="2" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyArea">Area (sq ft) *</label>
+                            <input type="number" id="propertyArea" required placeholder="2000" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="propertyDescription">Description *</label>
+                        <textarea id="propertyDescription" rows="4" required placeholder="Describe your property..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="propertyImage">Image URL *</label>
+                        <input type="url" id="propertyImage" required placeholder="https://example.com/image.jpg">
+                        <small>Enter a URL to an image of your property</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactEmail">Contact Email *</label>
+                        <input type="email" id="contactEmail" required placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contactPhone">Contact Phone *</label>
+                        <input type="tel" id="contactPhone" required placeholder="+1 234 567 8900">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-plus-circle"></i> List Property
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <h2 class="section-title">About HonestBroker</h2>
+            <div class="about-content">
+                <div class="about-card">
+                    <i class="fas fa-home"></i>
+                    <h3>Wide Selection</h3>
+                    <p>Browse through hundreds of properties across different locations and price ranges</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Best Prices</h3>
+                    <p>Find properties that fit your budget with our advanced price filtering</p>
+                </div>
+                <div class="about-card">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Easy Listing</h3>
+                    <p>List your property in minutes with our simple and intuitive form</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 HonestBroker. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Property Detail Modal -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody">
+                <!-- Property details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content auth-modal">
+            <span class="close" onclick="closeAuthModal('loginModal')">&times;</span>
+            <div class="auth-container">
+                <h2><i class="fas fa-sign-in-alt"></i> Login to HonestBroker</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="loginEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? <a href="#" onclick="switchToSignup()">Sign up here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content auth-modal">
+            <span class="close" onclick="closeAuthModal('signupModal')">&times;</span>
+            <div class="auth-container">
+                <h2><i class="fas fa-user-plus"></i> Create Your Account</h2>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label for="signupName"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="signupName" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="signupEmail" required placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPhone"><i class="fas fa-phone"></i> Phone Number</label>
+                        <input type="tel" id="signupPhone" required placeholder="+1 234 567 8900">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="signupPassword" required placeholder="Min 6 characters" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" required placeholder="Re-enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? <a href="#" onclick="switchToLogin()">Login here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
