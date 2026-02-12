@@ -55,91 +55,91 @@ function decryptData(encryptedData, key = 'honestbroker-secret-key-2026') {
 
 // ========== END ENCRYPTION UTILITIES ==========
 
-// Sample Properties for Demo
+// Sample Properties for Demo - Indian Properties
 const sampleProperties = [
     {
         id: 1,
-        title: "Modern Family House",
-        type: "house",
-        price: 450000,
-        location: "Los Angeles, CA",
+        title: "Spacious Villa in Bangalore",
+        type: "villa",
+        price: 12500000,
+        location: "Whitefield, Bangalore",
         bedrooms: 4,
-        bathrooms: 3,
-        area: 2500,
-        description: "Beautiful modern family home with spacious rooms, updated kitchen, and large backyard. Perfect for families looking for comfort and style.",
-        image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500",
+        bathrooms: 4,
+        area: 3200,
+        description: "Beautiful modern villa with spacious rooms, modular kitchen, and landscaped garden. Perfect for families looking for comfort and luxury in prime Bangalore location.",
+        image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800",
         contactEmail: "seller1@example.com",
-        contactPhone: "+1 555-0101"
+        contactPhone: "+91 98765-43210"
     },
     {
         id: 2,
-        title: "Downtown Luxury Apartment",
+        title: "Premium 3BHK Apartment",
         type: "apartment",
-        price: 350000,
-        location: "New York, NY",
-        bedrooms: 2,
-        bathrooms: 2,
-        area: 1200,
-        description: "Stunning luxury apartment in the heart of downtown. Features modern amenities, gym access, and breathtaking city views.",
-        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500",
+        price: 8500000,
+        location: "Powai, Mumbai",
+        bedrooms: 3,
+        bathrooms: 3,
+        area: 1850,
+        description: "Luxurious 3BHK apartment with lake view, club house, swimming pool and modern amenities. Located in prime Mumbai location with excellent connectivity.",
+        image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800",
         contactEmail: "seller2@example.com",
-        contactPhone: "+1 555-0102"
+        contactPhone: "+91 98765-43211"
     },
     {
         id: 3,
-        title: "Beachfront Villa",
+        title: "Gated Community Villa",
         type: "villa",
-        price: 1250000,
-        location: "Miami, FL",
+        price: 15000000,
+        location: "Gachibowli, Hyderabad",
         bedrooms: 5,
-        bathrooms: 4,
-        area: 4000,
-        description: "Exclusive beachfront villa with private pool, ocean views, and direct beach access. Ultimate luxury living experience.",
-        image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=500",
+        bathrooms: 5,
+        area: 4500,
+        description: "Premium gated community villa with private pool, landscaped garden, home theater, and 24/7 security. Located in Hyderabad's IT hub.",
+        image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800",
         contactEmail: "seller3@example.com",
-        contactPhone: "+1 555-0103"
+        contactPhone: "+91 98765-43212"
     },
     {
         id: 4,
-        title: "Cozy Studio Condo",
-        type: "condo",
-        price: 175000,
-        location: "Austin, TX",
-        bedrooms: 1,
-        bathrooms: 1,
-        area: 650,
-        description: "Perfect starter home or investment property. Cozy studio with modern finishes in a great neighborhood.",
-        image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500",
+        title: "Modern 2BHK Apartment",
+        type: "apartment",
+        price: 5500000,
+        location: "Indira Nagar, Pune",
+        bedrooms: 2,
+        bathrooms: 2,
+        area: 1200,
+        description: "Perfect starter home with modern finishes, covered parking, and excellent location near IT parks. Ready to move in.",
+        image: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800",
         contactEmail: "seller4@example.com",
-        contactPhone: "+1 555-0104"
+        contactPhone: "+91 98765-43213"
     },
     {
         id: 5,
-        title: "Spacious Suburban Home",
+        title: "Independent House",
         type: "house",
-        price: 525000,
-        location: "Seattle, WA",
-        bedrooms: 5,
+        price: 9500000,
+        location: "Koramangala, Bangalore",
+        bedrooms: 4,
         bathrooms: 3,
-        area: 3200,
-        description: "Large family home in quiet suburban area. Features include home office, finished basement, and two-car garage.",
-        image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=500",
+        area: 2800,
+        description: "Spacious independent house with car parking, terrace garden, and traditional architecture. Located in prime Bangalore location.",
+        image: "https://images.unsplash.com/photo-1605146769289-440113cc3d00?w=800",
         contactEmail: "seller5@example.com",
-        contactPhone: "+1 555-0105"
+        contactPhone: "+91 98765-43214"
     },
     {
         id: 6,
-        title: "Commercial Land Plot",
+        title: "Commercial Plot",
         type: "land",
-        price: 280000,
-        location: "Phoenix, AZ",
+        price: 7500000,
+        location: "Sector 62, Noida",
         bedrooms: 0,
         bathrooms: 0,
-        area: 5000,
-        description: "Prime commercial land in developing area. Perfect for building your dream business or investment opportunity.",
-        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=500",
+        area: 2000,
+        description: "Prime commercial plot near metro station. Perfect for building your dream business or excellent investment opportunity.",
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
         contactEmail: "seller6@example.com",
-        contactPhone: "+1 555-0106"
+        contactPhone: "+91 98765-43215"
     }
 ];
 

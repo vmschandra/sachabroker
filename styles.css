@@ -6,24 +6,27 @@
 }
 
 :root {
-    --primary-color: #0a1929;
-    --secondary-color: #1e293b;
-    --accent-color: #000000;
-    --graphite: #4a5568;
-    --navy-blue: #1e3a5f;
-    --text-color: #1a202c;
-    --light-bg: #f7fafc;
+    /* Indian-inspired warm color palette */
+    --primary-color: #FF6B35; /* Warm saffron orange */
+    --secondary-color: #F7931E; /* Golden orange */
+    --accent-color: #E63946; /* Vibrant red */
+    --dark-color: #2C3E50; /* Deep blue-grey */
+    --light-orange: #FFB347; /* Light warm orange */
+    --gold: #D4AF37; /* Indian gold */
+    --text-color: #2C3E50;
+    --light-bg: #FFF8F0; /* Warm cream background */
     --white: #ffffff;
-    --border-color: #e2e8f0;
-    --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 5px 20px rgba(0, 0, 0, 0.12);
+    --border-color: #FFE4CC;
+    --shadow: 0 4px 15px rgba(255, 107, 53, 0.15);
+    --shadow-hover: 0 8px 25px rgba(255, 107, 53, 0.25);
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: var(--text-color);
     overflow-x: hidden;
+    background: var(--light-bg);
 }
 
 .container {
@@ -143,24 +146,62 @@ header {
     width: 20px;
 }
 
-/* Hero Section */
+/* Hero Section with Dynamic Background */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--navy-blue) 100%);
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.95) 0%, rgba(230, 57, 70, 0.95) 100%),
+                url('https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=1600') center/cover;
     color: var(--white);
-    padding: 100px 20px;
+    padding: 150px 20px 100px;
     text-align: center;
+    overflow: hidden;
+    animation: backgroundPulse 20s ease-in-out infinite;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(255, 179, 71, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.3) 0%, transparent 50%);
+    animation: gradientShift 15s ease infinite;
+    pointer-events: none;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom center no-repeat;
+    background-size: cover;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
 }
 
 .hero-content h2 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin-bottom: 1rem;
     animation: fadeInDown 1s;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    font-weight: 700;
 }
 
 .hero-content p {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin-bottom: 2rem;
     animation: fadeInUp 1s;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .hero-buttons {
@@ -170,46 +211,70 @@ header {
     animation: fadeInUp 1.2s;
 }
 
+/* Keyframe Animations */
+@keyframes backgroundPulse {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1) rotate(5deg);
+    }
+}
+
 /* Buttons */
 .btn {
-    padding: 12px 30px;
+    padding: 14px 32px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
     font-size: 1rem;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: all 0.3s;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .btn-primary {
-    background: var(--accent-color);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--secondary-color) 100%);
     color: var(--white);
 }
 
 .btn-primary:hover {
-    background: var(--graphite);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-hover);
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
 }
 
 .btn-secondary {
     background: var(--white);
     color: var(--primary-color);
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--primary-color);
 }
 
 .btn-secondary:hover {
-    background: var(--light-bg);
-    border-color: var(--graphite);
-    transform: translateY(-2px);
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
 }
 
 .btn-clear {
-    background: var(--graphite);
+    background: var(--accent-color);
     color: var(--white);
 }
 
