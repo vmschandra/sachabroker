@@ -534,6 +534,11 @@ async function handleSignup(e) {
     
     // Reset form
     document.getElementById('signupForm').reset();
+    
+    // Redirect to dashboard after successful signup
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1500);
 }
 
 async function handleLogin(e) {
@@ -573,6 +578,11 @@ async function handleLogin(e) {
     
     // Reset form
     document.getElementById('loginForm').reset();
+    
+    // Redirect to dashboard after successful login
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1500);
 }
 
 function handleLogout(e) {

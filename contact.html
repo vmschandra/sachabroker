@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - HonestBroker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .contact-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            margin-top: 70px;
+        }
+        
+        .contact-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .contact-container {
+            max-width: 1200px;
+            margin: -50px auto 50px;
+            padding: 0 2rem;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-form-section,
+        .contact-info-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .submit-btn:hover {
+            background: #27ae60;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .contact-details h3 {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-details p {
+            color: #666;
+            margin: 0;
+        }
+        
+        .contact-details a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .contact-details a:hover {
+            text-decoration: underline;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+            background: var(--secondary-color);
+        }
+        
+        .map-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: var(--light-bg);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .faq-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+        
+        .faq-question {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-container {
+                margin-top: -30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>HonestBroker</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Properties</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+                <div class="auth-buttons" id="authButtonsContainer">
+                    <button id="loginBtn" class="btn btn-secondary btn-small">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="signupBtn" class="btn btn-primary btn-small">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+        <h1>Get In Touch</h1>
+        <p>We're here to help! Reach out to us with any questions or concerns.</p>
+    </section>
+
+    <div class="contact-container">
+        <!-- Contact Form and Info Grid -->
+        <div class="contact-grid">
+            <!-- Contact Form -->
+            <div class="contact-form-section">
+                <h2 class="section-title">
+                    <i class="fas fa-envelope"></i> Send Us a Message
+                </h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="contactName"><i class="fas fa-user"></i> Your Name *</label>
+                        <input type="text" id="contactName" required placeholder="John Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactEmail"><i class="fas fa-envelope"></i> Email Address *</label>
+                        <input type="email" id="contactEmail" required placeholder="john@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactPhone"><i class="fas fa-phone"></i> Phone Number</label>
+                        <input type="tel" id="contactPhone" placeholder="+1 (555) 123-4567">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactSubject"><i class="fas fa-tag"></i> Subject *</label>
+                        <select id="contactSubject" required>
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="listing">Property Listing Question</option>
+                            <option value="billing">Billing & Payments</option>
+                            <option value="partnership">Partnership Opportunity</option>
+                            <option value="feedback">Feedback & Suggestions</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactMessage"><i class="fas fa-comment-alt"></i> Your Message *</label>
+                        <textarea id="contactMessage" required placeholder="Tell us how we can help you..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-info-section">
+                <h2 class="section-title">
+                    <i class="fas fa-info-circle"></i> Contact Information
+                </h2>
+                
+                <div class="contact-info-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Office Address</h3>
+                        <p>
+                            123 Real Estate Boulevard<br>
+                            Suite 500<br>
+                            New York, NY 10001<br>
+                            United States
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Phone</h3>
+                        <p>
+                            Main: <a href="tel:+15551234567">+1 (555) 123-4567</a><br>
+                            Support: <a href="tel:+15551234568">+1 (555) 123-4568</a><br>
+                            Toll Free: <a href="tel:+18005551234">1-800-555-1234</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Email</h3>
+                        <p>
+                            General: <a href="mailto:info@honestbroker.com">info@honestbroker.com</a><br>
+                            Support: <a href="mailto:support@honestbroker.com">support@honestbroker.com</a><br>
+                            Sales: <a href="mailto:sales@honestbroker.com">sales@honestbroker.com</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="contact-info-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h3>Business Hours</h3>
+                        <p>
+                            Monday - Friday: 9:00 AM - 6:00 PM EST<br>
+                            Saturday: 10:00 AM - 4:00 PM EST<br>
+                            Sunday: Closed
+                        </p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #ddd;">
+                    <h3 style="color: var(--dark-color); margin-bottom: 1rem;">Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link" title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <h2 class="section-title">
+                <i class="fas fa-map"></i> Find Us
+            </h2>
+            <div class="map-placeholder">
+                <div style="text-align: center;">
+                    <i class="fas fa-map-marked-alt" style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary-color);"></i>
+                    <p>123 Real Estate Boulevard, Suite 500<br>New York, NY 10001</p>
+                    <p style="font-size: 0.9rem; color: #999; margin-top: 0.5rem;">
+                        (Map integration placeholder - Google Maps/OpenStreetMap can be added here)
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 class="section-title">
+                <i class="fas fa-question-circle"></i> Frequently Asked Questions
+            </h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> How quickly will I receive a response?
+                </div>
+                <div class="faq-answer">
+                    We aim to respond to all inquiries within 24 hours during business days. For urgent matters, 
+                    please call our support line directly.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> Can I schedule a meeting with your team?
+                </div>
+                <div class="faq-answer">
+                    Yes! You can request a meeting through the contact form above by selecting "Partnership Opportunity" 
+                    or "General Inquiry" and mentioning your preferred meeting times in the message.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> Do you offer phone support?
+                </div>
+                <div class="faq-answer">
+                    Yes, our support team is available via phone during business hours. Premium members have access 
+                    to priority phone support.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-right"></i> How can I report a technical issue?
+                </div>
+                <div class="faq-answer">
+                    Please use the contact form above and select "Technical Support" as the subject. Include detailed 
+                    information about the issue, including any error messages and steps to reproduce the problem.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background: var(--dark-color); color: white; padding: 3rem 2rem; margin-top: 4rem;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">HonestBroker</h3>
+                <p>Your trusted partner in real estate</p>
+            </div>
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                <a href="index.html" style="color: white; text-decoration: none;">Home</a>
+                <a href="dashboard.html" style="color: white; text-decoration: none;">Properties</a>
+                <a href="about.html" style="color: white; text-decoration: none;">About</a>
+                <a href="contact.html" style="color: white; text-decoration: none;">Contact</a>
+                <a href="refund-policy.html" style="color: white; text-decoration: none;">Refund Policy</a>
+            </div>
+            <p>&copy; 2026 HonestBroker. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const phone = document.getElementById('contactPhone').value;
+            const subject = document.getElementById('contactSubject').value;
+            const message = document.getElementById('contactMessage').value;
+            
+            // In a real application, this would send to a backend
+            console.log('Contact form submitted:', { name, email, phone, subject, message });
+            
+            showNotification('Thank you for your message! We will get back to you within 24 hours.', 'success');
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Show user menu if logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const storedUser = localStorage.getItem('currentUser_encrypted');
+            if (storedUser && currentUser) {
+                const authContainer = document.getElementById('authButtonsContainer');
+                authContainer.innerHTML = `
+                    <div class="user-menu" style="display: block;">
+                        <button class="btn btn-secondary btn-small">
+                            <i class="fas fa-user"></i> ${currentUser.name}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="profile.html"><i class="fas fa-user-cog"></i> Profile</a>
+                            <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+                
+                // Pre-fill form if logged in
+                if (currentUser.email) {
+                    document.getElementById('contactEmail').value = currentUser.email;
+                }
+                if (currentUser.name) {
+                    document.getElementById('contactName').value = currentUser.name;
+                }
+                if (currentUser.phone) {
+                    document.getElementById('contactPhone').value = currentUser.phone;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

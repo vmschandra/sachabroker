@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HonestBroker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .welcome-section h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-section p {
+            color: #666;
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .stat-icon.primary {
+            background: var(--primary-color);
+        }
+        
+        .stat-icon.accent {
+            background: var(--accent-color);
+        }
+        
+        .stat-icon.secondary {
+            background: var(--secondary-color);
+        }
+        
+        .stat-icon.info {
+            background: #3498db;
+        }
+        
+        .stat-content h3 {
+            font-size: 2rem;
+            margin: 0;
+            color: var(--dark-color);
+        }
+        
+        .stat-content p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .filter-tab {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 1rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .filter-tab:hover {
+            color: var(--primary-color);
+        }
+        
+        .filter-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+                margin-top: 80px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>HonestBroker</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <div id="userMenu" class="user-menu">
+                        <button class="btn btn-secondary btn-small">
+                            <i class="fas fa-user"></i> <span id="userName"></span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="profile.html"><i class="fas fa-user-cog"></i> Profile</a>
+                            <a href="dashboard.html"><i class="fas fa-home"></i> Browse Properties</a>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="welcome-section">
+                <h1>Welcome back, <span id="userNameDisplay"></span>! 👋</h1>
+                <p>Browse properties and manage your listings</p>
+            </div>
+            <div class="quick-actions">
+                <a href="index.html#list-property" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> List New Property
+                </a>
+                <a href="profile.html" class="btn btn-secondary">
+                    <i class="fas fa-user-cog"></i> Edit Profile
+                </a>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="totalProperties">0</h3>
+                    <p>Total Properties</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon accent">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="myProperties">0</h3>
+                    <p>My Listings</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon secondary">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="savedProperties">0</h3>
+                    <p>Saved Properties</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-content">
+                    <h3 id="recentViews">0</h3>
+                    <p>Recent Views</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">
+                <i class="fas fa-th"></i> All Properties
+            </button>
+            <button class="filter-tab" data-filter="my-listings">
+                <i class="fas fa-crown"></i> My Listings
+            </button>
+            <button class="filter-tab" data-filter="saved">
+                <i class="fas fa-heart"></i> Saved Properties
+            </button>
+        </div>
+
+        <!-- Search and Filter Section (from index.html) -->
+        <section class="properties-section" style="padding: 0;">
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search by location, title, or description...">
+                </div>
+                <div class="filters">
+                    <select id="typeFilter">
+                        <option value="all">All Types</option>
+                        <option value="house">House</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="condo">Condo</option>
+                        <option value="villa">Villa</option>
+                        <option value="land">Land</option>
+                    </select>
+                    <select id="priceFilter">
+                        <option value="all">All Prices</option>
+                        <option value="0-100000">Under $100,000</option>
+                        <option value="100000-300000">$100,000 - $300,000</option>
+                        <option value="300000-500000">$300,000 - $500,000</option>
+                        <option value="500000-1000000">$500,000 - $1,000,000</option>
+                        <option value="1000000-9999999999">Over $1,000,000</option>
+                    </select>
+                    <button id="clearFilters" class="btn btn-clear">Clear Filters</button>
+                </div>
+            </div>
+
+            <!-- Properties Grid -->
+            <div id="propertiesGrid" class="properties-grid">
+                <!-- Properties will be dynamically inserted here -->
+            </div>
+
+            <!-- No Results Message -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>No properties found matching your criteria</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Property Detail Modal (from index.html) -->
+    <div id="propertyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Dashboard specific JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            const storedUser = localStorage.getItem('currentUser_encrypted');
+            if (!storedUser) {
+                // Redirect to home if not logged in
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Update dashboard stats
+            function updateStats() {
+                const properties = JSON.parse(localStorage.getItem('properties') || '[]');
+                document.getElementById('totalProperties').textContent = properties.length;
+                
+                if (currentUser) {
+                    const myProps = properties.filter(p => p.ownerId === currentUser.id);
+                    document.getElementById('myProperties').textContent = myProps.length;
+                    document.getElementById('userNameDisplay').textContent = currentUser.name.split(' ')[0];
+                }
+                
+                // Placeholder for saved properties (you can implement this later)
+                document.getElementById('savedProperties').textContent = '0';
+                document.getElementById('recentViews').textContent = properties.slice(0, 5).length;
+            }
+
+            // Filter tabs functionality
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    const allProperties = JSON.parse(localStorage.getItem('properties') || '[]');
+                    
+                    let filteredProperties = allProperties;
+                    
+                    if (filter === 'my-listings' && currentUser) {
+                        filteredProperties = allProperties.filter(p => p.ownerId === currentUser.id);
+                    } else if (filter === 'saved') {
+                        // Placeholder for saved properties
+                        filteredProperties = [];
+                        showNotification('Saved properties feature coming soon!', 'error');
+                    }
+                    
+                    displayProperties(filteredProperties);
+                });
+            });
+
+            updateStats();
+        });
+    </script>
+</body>
+</html>

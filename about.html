@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - HonestBroker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            margin-top: 70px;
+        }
+        
+        .about-hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .about-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .about-section {
+            margin-bottom: 4rem;
+        }
+        
+        .about-section h2 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .about-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #666;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto 2rem;
+        }
+        
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .value-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .value-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .value-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+        }
+        
+        .value-card p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+        }
+        
+        .team-member-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+        }
+        
+        .team-member-info {
+            padding: 1.5rem;
+        }
+        
+        .team-member-info h3 {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .team-member-info .role {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .team-member-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        
+        .stats-section {
+            background: var(--light-bg);
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+        }
+        
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-item p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .about-hero p {
+                font-size: 1rem;
+            }
+            
+            .about-section h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>HonestBroker</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Properties</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="auth-buttons" id="authButtonsContainer">
+                    <button id="loginBtn" class="btn btn-secondary btn-small">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="signupBtn" class="btn btn-primary btn-small">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>About HonestBroker</h1>
+        <p>Connecting people with their dream properties through trust, transparency, and technology</p>
+    </section>
+
+    <!-- About Content -->
+    <div class="about-content">
+        <!-- Our Story -->
+        <div class="about-section">
+            <h2>Our Story</h2>
+            <p>
+                Founded in 2024, HonestBroker was born from a simple belief: real estate transactions should be 
+                transparent, trustworthy, and stress-free. We've built a platform that brings buyers, sellers, and 
+                realtors together in one seamless ecosystem, making property transactions easier than ever before.
+            </p>
+            <p>
+                Our team of passionate professionals combines decades of real estate experience with cutting-edge 
+                technology to deliver a platform that truly serves the needs of modern property seekers. Whether 
+                you're buying your first home, selling a property, or managing a portfolio of listings, HonestBroker 
+                is here to help you succeed.
+            </p>
+        </div>
+
+        <!-- Our Mission -->
+        <div class="about-section">
+            <h2>Our Mission</h2>
+            <p>
+                To revolutionize the real estate industry by providing a transparent, user-friendly platform that 
+                empowers individuals and professionals to make informed decisions about their most important investments. 
+                We believe everyone deserves access to quality properties and honest service.
+            </p>
+        </div>
+
+        <!-- Our Values -->
+        <div class="about-section">
+            <h2>Our Core Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <i class="fas fa-handshake"></i>
+                    <h3>Trust & Integrity</h3>
+                    <p>We believe in honest dealings and transparent communication at every step of the process.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Customer First</h3>
+                    <p>Your satisfaction is our priority. We're committed to providing exceptional service and support.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Innovation</h3>
+                    <p>We leverage technology to make real estate transactions simpler, faster, and more secure.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Security</h3>
+                    <p>Your data and transactions are protected with state-of-the-art encryption and security measures.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Accessibility</h3>
+                    <p>Quality properties and professional service should be accessible to everyone, everywhere.</p>
+                </div>
+                <div class="value-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Sustainability</h3>
+                    <p>We promote eco-friendly properties and sustainable practices in real estate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <h3>10,000+</h3>
+                <p>Properties Listed</p>
+            </div>
+            <div class="stat-item">
+                <h3>5,000+</h3>
+                <p>Happy Customers</p>
+            </div>
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Partner Realtors</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Cities Covered</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <div class="about-content">
+        <div class="about-section">
+            <h2>Meet Our Team</h2>
+            <p>
+                Our diverse team of real estate experts, developers, and customer service professionals work 
+                together to bring you the best platform experience.
+            </p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="team-member-info">
+                        <h3>Sarah Johnson</h3>
+                        <div class="role">CEO & Founder</div>
+                        <p>15+ years in real estate development and technology innovation.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="team-member-info">
+                        <h3>Michael Chen</h3>
+                        <div class="role">CTO</div>
+                        <p>Tech visionary with expertise in secure platforms and data protection.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="team-member-info">
+                        <h3>Emily Rodriguez</h3>
+                        <div class="role">Head of Customer Success</div>
+                        <p>Passionate about delivering exceptional customer experiences.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="team-member-image">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="team-member-info">
+                        <h3>David Thompson</h3>
+                        <div class="role">Lead Real Estate Agent</div>
+                        <p>Licensed realtor with 20+ years of industry experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--dark-color); color: white; padding: 3rem 2rem; margin-top: 4rem;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">HonestBroker</h3>
+                <p>Your trusted partner in real estate</p>
+            </div>
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                <a href="index.html" style="color: white; text-decoration: none;">Home</a>
+                <a href="dashboard.html" style="color: white; text-decoration: none;">Properties</a>
+                <a href="about.html" style="color: white; text-decoration: none;">About</a>
+                <a href="contact.html" style="color: white; text-decoration: none;">Contact</a>
+                <a href="refund-policy.html" style="color: white; text-decoration: none;">Refund Policy</a>
+            </div>
+            <p>&copy; 2026 HonestBroker. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Show user menu if logged in
+        document.addEventListener('DOMContentLoaded', function() {
+            const storedUser = localStorage.getItem('currentUser_encrypted');
+            if (storedUser && currentUser) {
+                const authContainer = document.getElementById('authButtonsContainer');
+                authContainer.innerHTML = `
+                    <div class="user-menu" style="display: block;">
+                        <button class="btn btn-secondary btn-small">
+                            <i class="fas fa-user"></i> ${currentUser.name}
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="profile.html"><i class="fas fa-user-cog"></i> Profile</a>
+                            <a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+                            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refund Policy - HonestBroker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .policy-container {
+            max-width: 900px;
+            margin: 100px auto 50px;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .policy-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--accent-color);
+        }
+        
+        .policy-header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .policy-header p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .policy-section {
+            margin-bottom: 2.5rem;
+        }
+        
+        .policy-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .policy-section h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        .policy-section p {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-section ul {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .policy-section li {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-box {
+            background: var(--light-bg);
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+        
+        .highlight-box p {
+            margin: 0;
+        }
+        
+        .contact-box {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .contact-box h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .contact-box a {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .policy-container {
+                margin-top: 80px;
+                padding: 1rem;
+            }
+            
+            .policy-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <i class="fas fa-home"></i>
+                    <h1>HonestBroker</h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Properties</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+                <div class="auth-buttons" id="authButtonsContainer">
+                    <button id="loginBtn" class="btn btn-secondary btn-small">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button id="signupBtn" class="btn btn-primary btn-small">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="policy-container">
+        <div class="policy-header">
+            <h1><i class="fas fa-file-contract"></i> Refund Policy</h1>
+            <p>Last Updated: February 12, 2026</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-info-circle"></i> Overview</h2>
+            <p>
+                At HonestBroker, we are committed to providing exceptional service to all our users. This refund 
+                policy outlines the circumstances under which refunds may be issued for services, listing fees, 
+                or premium memberships on our platform.
+            </p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-dollar-sign"></i> Service Fees and Listings</h2>
+            
+            <h3>Property Listing Fees</h3>
+            <p>
+                If you have paid for a premium property listing or featured placement:
+            </p>
+            <ul>
+                <li><strong>Refund Window:</strong> Full refund available within 48 hours of payment if listing has not been published</li>
+                <li><strong>Partial Refund:</strong> 50% refund available within 7 days if listing performance does not meet guaranteed metrics</li>
+                <li><strong>No Refund:</strong> After 7 days or if listing has received inquiries/views as promised</li>
+            </ul>
+
+            <h3>Premium Membership</h3>
+            <p>
+                For users who have subscribed to our premium membership:
+            </p>
+            <ul>
+                <li><strong>Trial Period:</strong> Full refund available within 14 days of initial subscription</li>
+                <li><strong>Annual Plans:</strong> Pro-rated refund available if canceling within first 30 days</li>
+                <li><strong>Monthly Plans:</strong> No refund for current month, but you can cancel for future months</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <p><i class="fas fa-exclamation-triangle"></i> <strong>Important:</strong> All refund requests must be submitted 
+            through our official channels. Processing time is typically 5-10 business days.</p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-ban"></i> Non-Refundable Services</h2>
+            <p>The following services are non-refundable:</p>
+            <ul>
+                <li>Completed transactions between buyers and sellers</li>
+                <li>Professional photography or virtual tour services after delivery</li>
+                <li>Background verification fees</li>
+                <li>Legal documentation services after documents are prepared</li>
+                <li>Third-party services arranged through our platform</li>
+                <li>Custom listing promotions after campaign launch</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-undo"></i> How to Request a Refund</h2>
+            <p>To request a refund, please follow these steps:</p>
+            <ul>
+                <li><strong>Step 1:</strong> Log in to your account and navigate to "My Profile" → "Billing"</li>
+                <li><strong>Step 2:</strong> Click on "Request Refund" for the eligible transaction</li>
+                <li><strong>Step 3:</strong> Provide reason for refund request and supporting documentation</li>
+                <li><strong>Step 4:</strong> Submit the form and await review (typically 2-3 business days)</li>
+                <li><strong>Alternative:</strong> Contact our support team at <a href="mailto:refunds@honestbroker.com" style="color: var(--primary-color);">refunds@honestbroker.com</a></li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-clock"></i> Processing Time</h2>
+            <p>
+                Once your refund request is approved:
+            </p>
+            <ul>
+                <li>Credit card refunds: 5-10 business days</li>
+                <li>PayPal refunds: 2-5 business days</li>
+                <li>Bank transfers: 7-14 business days</li>
+                <li>Cryptocurrency refunds: 1-3 business days (subject to network fees)</li>
+            </ul>
+            <p>
+                You will receive an email confirmation once the refund has been processed. Please note that the 
+                time it takes for the refund to appear in your account may vary depending on your financial institution.
+            </p>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-exchange-alt"></i> Chargebacks</h2>
+            <p>
+                We strongly encourage you to contact us directly to resolve any issues before initiating a chargeback 
+                with your bank or credit card company. Chargebacks may result in:
+            </p>
+            <ul>
+                <li>Suspension of your account pending investigation</li>
+                <li>Additional fees to cover chargeback processing costs</li>
+                <li>Permanent ban from the platform if chargeback is deemed fraudulent</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-shield-alt"></i> Exceptions and Special Circumstances</h2>
+            <p>
+                We understand that unique situations may arise. Refund requests will be considered on a case-by-case 
+                basis for:
+            </p>
+            <ul>
+                <li>Technical issues preventing access to paid services</li>
+                <li>Duplicate charges or billing errors</li>
+                <li>Service outages affecting your listing visibility</li>
+                <li>Fraudulent activity on your account</li>
+                <li>Force majeure events affecting property transactions</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-gavel"></i> Dispute Resolution</h2>
+            <p>
+                If your refund request is denied and you wish to dispute the decision:
+            </p>
+            <ul>
+                <li>Submit a formal dispute through our support portal within 30 days</li>
+                <li>Provide any additional evidence or documentation</li>
+                <li>Our dispute resolution team will review within 10 business days</li>
+                <li>Final decision will be communicated via email</li>
+            </ul>
+        </div>
+
+        <div class="policy-section">
+            <h2><i class="fas fa-edit"></i> Changes to This Policy</h2>
+            <p>
+                HonestBroker reserves the right to modify this refund policy at any time. Changes will be effective 
+                immediately upon posting to the website. We will notify users of significant changes via email and 
+                on-platform notifications. Your continued use of our services after changes indicates acceptance of 
+                the updated policy.
+            </p>
+        </div>
+
+        <div class="contact-box">
+            <h3><i class="fas fa-headset"></i> Need Help?</h3>
+            <p>If you have questions about our refund policy, please contact us:</p>
+            <p>
+                Email: <a href="mailto:refunds@honestbroker.com">refunds@honestbroker.com</a><br>
+                Phone: +1 (555) 123-4567<br>
+                Hours: Monday - Friday, 9 AM - 6 PM EST
+            </p>
+            <p style="margin-top: 1rem;">
+                <a href="contact.html" class="btn btn-secondary" style="display: inline-block; margin-top: 1rem;">
+                    <i class="fas fa-envelope"></i> Contact Support
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <footer style="background: var(--dark-color); color: white; padding: 3rem 2rem; margin-top: 4rem;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">HonestBroker</h3>
+                <p>Your trusted partner in real estate</p>
+            </div>
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem;">
+                <a href="index.html" style="color: white; text-decoration: none;">Home</a>
+                <a href="dashboard.html" style="color: white; text-decoration: none;">Properties</a>
+                <a href="about.html" style="color: white; text-decoration: none;">About</a>
+                <a href="contact.html" style="color: white; text-decoration: none;">Contact</a>
+                <a href="refund-policy.html" style="color: white; text-decoration: none;">Refund Policy</a>
+            </div>
+            <p>&copy; 2026 HonestBroker. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
