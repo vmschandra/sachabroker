@@ -149,39 +149,11 @@ header {
 /* Hero Section with Dynamic Background */
 .hero {
     position: relative;
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.95) 0%, rgba(230, 57, 70, 0.95) 100%),
-                url('https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=1600') center/cover;
+    background: url('header4.png') center 40%/cover no-repeat;
     color: var(--white);
     padding: 150px 20px 100px;
     text-align: center;
     overflow: hidden;
-    animation: backgroundPulse 20s ease-in-out infinite;
-}
-
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 50%, rgba(255, 179, 71, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.3) 0%, transparent 50%);
-    animation: gradientShift 15s ease infinite;
-    pointer-events: none;
-}
-
-.hero::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom center no-repeat;
-    background-size: cover;
-    pointer-events: none;
 }
 
 .hero-content {
