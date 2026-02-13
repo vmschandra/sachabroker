@@ -164,6 +164,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // Force reload Indian properties (version 2.1)
+    const dataVersion = localStorage.getItem('dataVersion');
+    if (dataVersion !== '2.1') {
+        localStorage.setItem('dataVersion', '2.1');
+        localStorage.removeItem('properties'); // Clear old properties
+    }
+    
     // Load properties from localStorage or use sample data
     const storedProperties = localStorage.getItem('properties');
     if (storedProperties) {
@@ -307,7 +314,7 @@ function displayProperties(propertiesToDisplay) {
                     <h3 class="property-title">${property.title}</h3>
                 </div>
                 <span class="property-type">${property.type}</span>
-                <div class="property-price">$${formatNumber(property.price)}</div>
+                <div class="property-price">₹${formatNumber(property.price)}</div>
                 <div class="property-location">
                     <i class="fas fa-map-marker-alt"></i>
                     ${property.location}
@@ -391,7 +398,7 @@ function showPropertyDetails(propertyId) {
             <div class="modal-property-header">
                 <h2 class="modal-property-title">${property.title}</h2>
                 <span class="property-type">${property.type}</span>
-                <div class="modal-property-price">$${formatNumber(property.price)}</div>
+                <div class="modal-property-price">₹${formatNumber(property.price)}</div>
                 <div class="property-location">
                     <i class="fas fa-map-marker-alt"></i>
                     ${property.location}
