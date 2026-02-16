@@ -184,6 +184,53 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
 });
 
+// Setup dropdown menu with 1-second delay before hiding
+function setupDropdownMenu() {
+    const userMenu = document.getElementById('userMenu');
+    const dropdownMenu = userMenu?.querySelector('.dropdown-menu');
+    
+    if (!userMenu || !dropdownMenu) return;
+    
+    let hideTimeout;
+    
+    // Show dropdown on hover
+    userMenu.addEventListener('mouseenter', function() {
+        clearTimeout(hideTimeout);
+        dropdownMenu.style.display = 'block';
+        setTimeout(() => {
+            dropdownMenu.style.opacity = '1';
+            dropdownMenu.style.visibility = 'visible';
+        }, 10);
+    });
+    
+    // Hide dropdown with 1-second delay
+    userMenu.addEventListener('mouseleave', function() {
+        hideTimeout = setTimeout(() => {
+            dropdownMenu.style.opacity = '0';
+            dropdownMenu.style.visibility = 'hidden';
+            setTimeout(() => {
+                dropdownMenu.style.display = 'none';
+            }, 300);
+        }, 1000); // 1 second delay
+    });
+    
+    // Keep dropdown open when hovering over it
+    dropdownMenu.addEventListener('mouseenter', function() {
+        clearTimeout(hideTimeout);
+    });
+    
+    // Hide dropdown with delay when leaving dropdown itself
+    dropdownMenu.addEventListener('mouseleave', function() {
+        hideTimeout = setTimeout(() => {
+            dropdownMenu.style.opacity = '0';
+            dropdownMenu.style.visibility = 'hidden';
+            setTimeout(() => {
+                dropdownMenu.style.display = 'none';
+            }, 300);
+        }, 1000); // 1 second delay
+    });
+}
+
 // Save properties to localStorage
 function saveProperties() {
     localStorage.setItem('properties', JSON.stringify(properties));
@@ -717,14 +764,26 @@ function handleLogout(e) {
 }
 
 function updateUIForLoggedInUser() {
-    document.getElementById('loginBtn').style.display = 'none';
-    document.getElementById('signupBtn').style.display = 'none';
-    document.getElementById('userMenu').style.display = 'block';
-    document.getElementById('userName').textContent = currentUser.name;
+    // Hide login/signup buttons if they exist (only on index.html)
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    if (loginBtn) loginBtn.style.display = 'none';
+    if (signupBtn) signupBtn.style.display = 'none';
     
-    // Pre-fill contact info in property form
-    document.getElementById('contactEmail').value = currentUser.email;
-    document.getElementById('contactPhone').value = currentUser.phone;
+    // Show user menu and set username
+    const userMenu = document.getElementById('userMenu');
+    const userName = document.getElementById('userName');
+    if (userMenu) userMenu.style.display = 'block';
+    if (userName && currentUser) userName.textContent = currentUser.name;
+    
+    // Pre-fill contact info in property form (only on index.html)
+    const contactEmail = document.getElementById('contactEmail');
+    const contactPhone = document.getElementById('contactPhone');
+    if (contactEmail && currentUser) contactEmail.value = currentUser.email;
+    if (contactPhone && currentUser) contactPhone.value = currentUser.phone;
+    
+    // Setup dropdown menu with delay
+    setupDropdownMenu();
     
     // Update membership banner
     updateMembershipBanner();

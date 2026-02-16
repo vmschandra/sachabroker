@@ -316,6 +316,11 @@
                 return;
             }
 
+            // Initialize UI for logged in user (show username and dropdown)
+            if (typeof updateUIForLoggedInUser === 'function') {
+                updateUIForLoggedInUser();
+            }
+
             // Update dashboard stats
             function updateStats() {
                 const properties = JSON.parse(localStorage.getItem('properties') || '[]');

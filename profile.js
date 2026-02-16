@@ -28,6 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Initialize UI for logged in user (show username and dropdown)
+    if (typeof updateUIForLoggedInUser === 'function') {
+        updateUIForLoggedInUser();
+    }
+
     // Load profile data
     loadProfileData();
     

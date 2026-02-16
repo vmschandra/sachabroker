@@ -6,19 +6,19 @@
 }
 
 :root {
-    /* Indian-inspired warm color palette */
-    --primary-color: #FF6B35; /* Warm saffron orange */
-    --secondary-color: #F7931E; /* Golden orange */
-    --accent-color: #E63946; /* Vibrant red */
-    --dark-color: #2C3E50; /* Deep blue-grey */
-    --light-orange: #FFB347; /* Light warm orange */
-    --gold: #D4AF37; /* Indian gold */
-    --text-color: #2C3E50;
-    --light-bg: #FFF8F0; /* Warm cream background */
+    /* Navy blue inspired color palette */
+    --primary-color: #1e3a8a; /* Deep navy blue */
+    --secondary-color: #3b82f6; /* Bright blue */
+    --accent-color: #2563eb; /* Medium blue */
+    --dark-color: #1e293b; /* Dark slate */
+    --light-blue: #60a5fa; /* Light blue */
+    --gold: #fbbf24; /* Gold accent */
+    --text-color: #1e293b;
+    --light-bg: #f1f5f9; /* Light blue-gray background */
     --white: #ffffff;
-    --border-color: #FFE4CC;
-    --shadow: 0 4px 15px rgba(255, 107, 53, 0.15);
-    --shadow-hover: 0 8px 25px rgba(255, 107, 53, 0.25);
+    --border-color: #cbd5e1;
+    --shadow: 0 4px 15px rgba(30, 58, 138, 0.15);
+    --shadow-hover: 0 8px 25px rgba(30, 58, 138, 0.25);
 }
 
 body {
@@ -125,17 +125,6 @@ header {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
-    /* Add padding area for easier mouse access */
-    padding-top: 0.5rem;
-}
-
-.user-menu:hover .dropdown-menu,
-.dropdown-menu:hover {
-    display: block;
-    opacity: 1;
-    visibility: visible;
-    /* Delay before hiding */
-    transition-delay: 0s;
 }
 
 .dropdown-menu a {
@@ -239,7 +228,7 @@ header {
 .btn-primary:hover {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4);
 }
 
 .btn-secondary {
@@ -253,7 +242,7 @@ header {
     color: var(--white);
     border-color: var(--primary-color);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4);
 }
 
 .btn-clear {
@@ -272,7 +261,7 @@ header {
 
 /* Membership Banner Styles */
 .membership-banner {
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.95) 0%, rgba(247, 147, 30, 0.95) 100%);
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%);
     padding: 20px 0;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     position: relative;
@@ -366,7 +355,7 @@ header {
 
 /* Membership Banner Variations */
 .membership-banner.pro {
-    background: linear-gradient(135deg, #D4AF37 0%, #F7931E 100%);
+    background: linear-gradient(135deg, #fbbf24 0%, #3b82f6 100%);
 }
 
 .membership-banner.elite {
@@ -545,7 +534,7 @@ header {
 }
 
 .upgrade-prompt {
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
     padding: 1.5rem;
     border-radius: 8px;
     margin-top: 1rem;
@@ -701,7 +690,7 @@ header {
 .upgrade-mini-prompt {
     margin-top: 0.5rem;
     padding: 0.5rem;
-    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
     border-radius: 5px;
     text-align: center;
     font-size: 0.8rem;
