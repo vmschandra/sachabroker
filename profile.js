@@ -1,5 +1,25 @@
 // Profile Management JavaScript
 
+// Membership plan data
+const membershipPlans = {
+    free: {
+        name: 'Free',
+        price: 0,
+        displayPrice: '₹0',
+        icon: 'fa-home',
+        color: '#95a5a6'
+    },
+    pro: {
+        name: 'Pro',
+        priceMonthly: 399,
+        priceYearly: 2500,
+        displayPrice: '₹399/month',
+        displayPriceYearly: '₹2,500/year',
+        icon: 'fa-star',
+        color: '#D4AF37'
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check if user is logged in
     const storedUser = localStorage.getItem('currentUser_encrypted');
@@ -13,6 +33,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup event listeners
     setupProfileEventListeners();
+    
+    // Initialize membership section
+    initializeMembershipSection();
+    
+    // Scroll to membership section if hash is present
+    if (window.location.hash === '#membership') {
+        setTimeout(() => {
+            const membershipSection = document.querySelector('.membership-section');
+            if (membershipSection) {
+                membershipSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Add a highlight effect
+                membershipSection.style.animation = 'highlight 2s ease';
+            }
+        }, 500);
+    }
 });
 
 function loadProfileData() {
@@ -87,6 +122,20 @@ function setupProfileEventListeners() {
             this.classList.add('active');
         });
     });
+    
+    // Membership plan selection
+    document.querySelectorAll('.membership-plan').forEach(plan => {
+        plan.addEventListener('click', function() {
+            document.querySelectorAll('.membership-plan').forEach(p => p.classList.remove('active'));
+            this.classList.add('active');
+            
+            const planType = this.dataset.plan;
+            updateUpgradeButton(planType);
+        });
+    });
+    
+    // Upgrade membership button
+    document.getElementById('upgradeMembershipBtn').addEventListener('click', handleMembershipUpgrade);
     
     // Card number formatting
     document.getElementById('cardNumber').addEventListener('input', formatCardNumber);
@@ -286,3 +335,124 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ========== MEMBERSHIP FUNCTIONS ==========
+
+function initializeMembershipSection() {
+    const profileData = getProfileData();
+    const membership = profileData.membership || {
+        plan: 'free',
+        startDate: new Date().toISOString(),
+        renewalDate: null
+    };
+    
+    // Update UI with current plan
+    updateMembershipUI(membership);
+    
+    // Set active plan
+    const activePlan = document.querySelector(`.membership-plan[data-plan="${membership.plan}"]`);
+    if (activePlan) {
+        document.querySelectorAll('.membership-plan').forEach(p => p.classList.remove('active'));
+        activePlan.classList.add('active');
+    }
+}
+
+function updateMembershipUI(membership) {
+    const plan = membershipPlans[membership.plan] || membershipPlans.free;
+    
+    // Update badge
+    const badge = document.getElementById('currentPlanBadge');
+    badge.className = `membership-badge ${membership.plan}`;
+    badge.innerHTML = `<i class="fas fa-check-circle"></i><span id="currentPlanName">${plan.name} Plan</span>`;
+    
+    // Update member since date
+    if (membership.startDate) {
+        const startDate = new Date(membership.startDate);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('membershipDate').textContent = `Member since ${startDate.toLocaleDateString('en-US', options)}`;
+    }
+    
+    // Update upgrade button
+    updateUpgradeButton(membership.plan);
+}
+
+function updateUpgradeButton(currentPlan) {
+    const btn = document.getElementById('upgradeMembershipBtn');
+    const btnText = document.getElementById('upgradeBtnText');
+    
+    if (currentPlan === 'free') {
+        btnText.textContent = 'Upgrade to Pro';
+        btn.style.display = 'flex';
+    } else if (currentPlan === 'pro') {
+        btnText.textContent = 'Current Plan Active';
+        btn.style.display = 'flex';
+    }
+}
+
+function handleMembershipUpgrade() {
+    const selectedPlan = document.querySelector('.membership-plan.active');
+    if (!selectedPlan) {
+        showNotification('Please select a membership plan', 'error');
+        return;
+    }
+    
+    const planType = selectedPlan.dataset.plan;
+    const plan = membershipPlans[planType];
+    
+    // Get current membership
+    const profileData = getProfileData();
+    const currentPlan = profileData.membership?.plan || 'free';
+    
+    // Check if trying to downgrade
+    if (planType === 'free' && currentPlan === 'pro') {
+        if (!confirm(`Are you sure you want to downgrade from Pro to Free?`)) {
+            return;
+        }
+    }
+    
+    // Same plan check
+    if (planType === currentPlan) {
+        showNotification(`You are already on the ${plan.name} plan!`, 'info');
+        return;
+    }
+    
+    // Calculate renewal date (30 days from now for paid plans)
+    const renewalDate = planType === 'pro' ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null;
+    
+    // Update membership
+    const membership = {
+        plan: planType,
+        startDate: profileData.membership?.startDate || new Date().toISOString(),
+        renewalDate: renewalDate,
+        lastUpdated: new Date().toISOString()
+    };
+    
+    // Save to profile
+    profileData.membership = membership;
+    saveProfileData(profileData);
+    
+    // Update UI
+    updateMembershipUI(membership);
+    
+    // Show success message
+    if (planType === 'free') {
+        showNotification(`Switched to ${plan.name} plan`, 'success');
+    } else {
+        showNotification(`🎉 Welcome to ${plan.name}! Your premium features are now active.`, 'success');
+    }
+    
+    // Log analytics (for future tracking)
+    console.log('Membership updated:', {
+        userId: currentUser?.id,
+        plan: planType,
+        timestamp: new Date().toISOString()
+    });
+}
+
+// Helper to get renewal date string
+function getRenewalDateString(isoDate) {
+    if (!isoDate) return 'No renewal date';
+    const date = new Date(isoDate);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `Renews on ${date.toLocaleDateString('en-US', options)}`;
+}

@@ -102,6 +102,7 @@ header {
 }
 
 /* User Menu */
+/* User Menu */
 .user-menu {
     position: relative;
 }
@@ -121,10 +122,20 @@ header {
     min-width: 200px;
     margin-top: 0.5rem;
     z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* Add padding area for easier mouse access */
+    padding-top: 0.5rem;
 }
 
-.user-menu:hover .dropdown-menu {
+.user-menu:hover .dropdown-menu,
+.dropdown-menu:hover {
     display: block;
+    opacity: 1;
+    visibility: visible;
+    /* Delay before hiding */
+    transition-delay: 0s;
 }
 
 .dropdown-menu a {
@@ -259,6 +270,129 @@ header {
     font-size: 1.1rem;
 }
 
+/* Membership Banner Styles */
+.membership-banner {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.95) 0%, rgba(247, 147, 30, 0.95) 100%);
+    padding: 20px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.membership-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.membership-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.membership-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex: 1;
+}
+
+.membership-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.membership-icon i {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.membership-text h3 {
+    color: white;
+    margin: 0 0 0.25rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.membership-text p {
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+    font-size: 1rem;
+}
+
+.membership-action {
+    flex-shrink: 0;
+}
+
+.membership-banner .btn {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.membership-banner .btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Membership Banner Variations */
+.membership-banner.pro {
+    background: linear-gradient(135deg, #D4AF37 0%, #F7931E 100%);
+}
+
+.membership-banner.elite {
+    background: linear-gradient(135deg, #8e44ad 0%, #e74c3c 100%);
+}
+
+@media (max-width: 768px) {
+    .membership-banner-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .membership-info {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .membership-text h3 {
+        font-size: 1.25rem;
+    }
+
+    .membership-text p {
+        font-size: 0.9rem;
+    }
+}
+
 /* Section Styles */
 .properties-section,
 .list-property-section,
@@ -367,6 +501,67 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+.pro-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--secondary-color) 100%);
+    color: var(--white);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.masked-content {
+    color: #999;
+    font-style: italic;
+    cursor: help;
+    position: relative;
+}
+
+.masked-content i {
+    font-size: 0.8em;
+    margin-right: 3px;
+}
+
+.pro-locked {
+    background: rgba(212, 175, 55, 0.05);
+    border: 2px dashed var(--gold);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.pro-locked h3 {
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.upgrade-prompt {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.upgrade-prompt p {
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+    font-weight: 600;
+}
+
+.upgrade-prompt .btn {
+    margin-top: 0.5rem;
+}
+
 .owner-badge {
     display: inline-block;
     background: var(--light-bg);
@@ -457,6 +652,65 @@ header {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.property-contact-section {
+    margin: 1rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.property-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.property-contact.locked {
+    opacity: 0.6;
+}
+
+.contact-item-small {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.contact-item-small i {
+    color: var(--primary-color);
+    width: 16px;
+    font-size: 0.9rem;
+}
+
+.contact-item-small a {
+    color: var(--primary-color);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.contact-item-small a:hover {
+    text-decoration: underline;
+}
+
+.contact-item-small .masked-content {
+    font-size: 0.85rem;
+}
+
+.upgrade-mini-prompt {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%);
+    border-radius: 5px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.upgrade-mini-prompt i {
+    font-size: 0.75rem;
 }
 
 .property-actions {

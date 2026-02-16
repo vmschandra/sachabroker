@@ -300,9 +300,16 @@ function displayProperties(propertiesToDisplay) {
     
     noResults.style.display = 'none';
     
+    const isPro = isProMember();
+    
     grid.innerHTML = propertiesToDisplay.map(property => {
         const isOwner = currentUser && property.ownerId === currentUser.id;
         const ownerBadge = property.ownerName ? `<span class="owner-badge"><i class="fas fa-user"></i> Listed by: ${property.ownerName}</span>` : '';
+        
+        // Always show full info for property owners
+        const showFullInfo = isOwner || isPro;
+        const priceDisplay = showFullInfo ? `₹${formatNumber(property.price)}` : getMaskedPrice(property.price);
+        const locationDisplay = showFullInfo ? property.location : getMaskedLocation(property.location);
         
         return `
         <div class="property-card" onclick="showPropertyDetails(${property.id})">
@@ -314,10 +321,10 @@ function displayProperties(propertiesToDisplay) {
                     <h3 class="property-title">${property.title}</h3>
                 </div>
                 <span class="property-type">${property.type}</span>
-                <div class="property-price">₹${formatNumber(property.price)}</div>
+                <div class="property-price">${priceDisplay}</div>
                 <div class="property-location">
                     <i class="fas fa-map-marker-alt"></i>
-                    ${property.location}
+                    ${locationDisplay}
                 </div>
                 ${ownerBadge}
                 <div class="property-details">
@@ -335,6 +342,36 @@ function displayProperties(propertiesToDisplay) {
                     </div>
                 </div>
                 <p class="property-description">${property.description}</p>
+                
+                <div class="property-contact-section">
+                    ${showFullInfo ? `
+                        <div class="property-contact">
+                            <div class="contact-item-small">
+                                <i class="fas fa-envelope"></i>
+                                <a href="mailto:${property.contactEmail}">${property.contactEmail}</a>
+                            </div>
+                            <div class="contact-item-small">
+                                <i class="fas fa-phone"></i>
+                                <a href="tel:${property.contactPhone}">${property.contactPhone}</a>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="property-contact locked">
+                            <div class="contact-item-small">
+                                <i class="fas fa-lock"></i>
+                                <span class="masked-content">${getMaskedContact(property.contactEmail, 'email')}</span>
+                            </div>
+                            <div class="contact-item-small">
+                                <i class="fas fa-lock"></i>
+                                <span class="masked-content">${getMaskedContact(property.contactPhone, 'phone')}</span>
+                            </div>
+                        </div>
+                        <div class="upgrade-mini-prompt">
+                            <i class="fas fa-star"></i> Upgrade to Pro to view contact
+                        </div>
+                    `}
+                </div>
+                
                 <div class="property-actions">
                     <button class="btn btn-primary" onclick="event.stopPropagation(); showPropertyDetails(${property.id})">
                         <i class="fas fa-eye"></i> View Details
@@ -390,6 +427,50 @@ function showPropertyDetails(propertyId) {
     const property = properties.find(p => p.id === propertyId);
     if (!property) return;
     
+    const isOwner = currentUser && property.ownerId === currentUser.id;
+    const isPro = isProMember();
+    const showFullInfo = isOwner || isPro;
+    
+    const priceDisplay = showFullInfo ? `₹${formatNumber(property.price)}` : getMaskedPrice(property.price);
+    const locationDisplay = showFullInfo ? property.location : getMaskedLocation(property.location);
+    
+    let contactSection = '';
+    if (showFullInfo) {
+        contactSection = `
+            <div class="modal-contact-info">
+                <h3>Contact Information</h3>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:${property.contactEmail}">${property.contactEmail}</a>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:${property.contactPhone}">${property.contactPhone}</a>
+                </div>
+            </div>
+        `;
+    } else {
+        contactSection = `
+            <div class="modal-contact-info pro-locked">
+                <h3><i class="fas fa-lock"></i> Contact Information - Pro Members Only</h3>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span class="masked-content">${getMaskedContact(property.contactEmail, 'email')}</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span class="masked-content">${getMaskedContact(property.contactPhone, 'phone')}</span>
+                </div>
+                <div class="upgrade-prompt">
+                    <p><i class="fas fa-star"></i> Upgrade to Pro to view contact details and connect with property owners</p>
+                    <a href="profile.html#membership" class="btn btn-primary">
+                        <i class="fas fa-bolt"></i> Upgrade to Pro - ₹399/month
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+    
     const modalBody = document.getElementById('modalBody');
     modalBody.innerHTML = `
         <img src="${property.image}" alt="${property.title}" class="modal-property-image"
@@ -398,10 +479,10 @@ function showPropertyDetails(propertyId) {
             <div class="modal-property-header">
                 <h2 class="modal-property-title">${property.title}</h2>
                 <span class="property-type">${property.type}</span>
-                <div class="modal-property-price">₹${formatNumber(property.price)}</div>
+                <div class="modal-property-price">${priceDisplay}</div>
                 <div class="property-location">
                     <i class="fas fa-map-marker-alt"></i>
-                    ${property.location}
+                    ${locationDisplay}
                 </div>
             </div>
             
@@ -425,17 +506,7 @@ function showPropertyDetails(propertyId) {
                 <p>${property.description}</p>
             </div>
             
-            <div class="modal-contact-info">
-                <h3>Contact Information</h3>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <a href="mailto:${property.contactEmail}">${property.contactEmail}</a>
-                </div>
-                <div class="contact-item">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:${property.contactPhone}">${property.contactPhone}</a>
-                </div>
-            </div>
+            ${contactSection}
         </div>
     `;
     
@@ -450,6 +521,46 @@ function closeModal() {
 // Format number with commas
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Check if current user is a Pro member
+function isProMember() {
+    if (!currentUser) return false;
+    
+    const profileData = localStorage.getItem(`profile_${currentUser.id}`);
+    if (!profileData) return false;
+    
+    try {
+        const profile = JSON.parse(profileData);
+        return profile.membership && profile.membership.plan === 'pro';
+    } catch (e) {
+        return false;
+    }
+}
+
+// Mask price for non-Pro members
+function getMaskedPrice(price) {
+    // Show price to all users now
+    return `₹${formatNumber(price)}`;
+}
+
+// Mask location for non-Pro members
+function getMaskedLocation(location) {
+    // Show location to all users now
+    return location;
+}
+
+// Mask contact info for non-Pro members
+function getMaskedContact(contactInfo, type = 'email') {
+    if (isProMember()) {
+        return contactInfo;
+    }
+    if (type === 'email') {
+        return `<span class="masked-content" title="Upgrade to Pro to view contact">•••@••••.com</span>`;
+    } else if (type === 'phone') {
+        return `<span class="masked-content" title="Upgrade to Pro to view contact">+•• •••••-•••••</span>`;
+    }
+    return contactInfo;
 }
 
 // Show notification
@@ -614,12 +725,70 @@ function updateUIForLoggedInUser() {
     // Pre-fill contact info in property form
     document.getElementById('contactEmail').value = currentUser.email;
     document.getElementById('contactPhone').value = currentUser.phone;
+    
+    // Update membership banner
+    updateMembershipBanner();
+}
+
+function updateMembershipBanner() {
+    const banner = document.getElementById('membershipBanner');
+    if (!banner) return;
+    
+    // Get user's profile data to check membership
+    const profileData = localStorage.getItem(`profile_${currentUser.id}`);
+    let membership = { plan: 'free' };
+    
+    if (profileData) {
+        try {
+            const profile = JSON.parse(profileData);
+            membership = profile.membership || { plan: 'free' };
+        } catch (e) {
+            console.error('Error loading membership:', e);
+        }
+    }
+    
+    // Show the banner
+    banner.style.display = 'block';
+    
+    // Update banner styling based on plan
+    banner.className = 'membership-banner';
+    if (membership.plan === 'pro') {
+        banner.classList.add('pro');
+    }
+    
+    // Update content based on membership status
+    const title = document.getElementById('membershipTitle');
+    const description = document.getElementById('membershipDescription');
+    const actionBtn = document.getElementById('membershipActionBtn');
+    const icon = document.getElementById('membershipIcon');
+    
+    if (membership.plan === 'free') {
+        // Non-member or free plan
+        title.textContent = `Welcome back, ${currentUser.name.split(' ')[0]}!`;
+        description.textContent = "You're currently on the Free plan. Upgrade to Pro for just ₹399/month!";
+        actionBtn.innerHTML = '<i class="fas fa-bolt"></i> Become a Pro Member';
+        actionBtn.href = 'profile.html#membership';
+        icon.innerHTML = '<i class="fas fa-user"></i>';
+    } else if (membership.plan === 'pro') {
+        // Pro member
+        title.textContent = `Welcome back, Pro Member ${currentUser.name.split(' ')[0]}! 🌟`;
+        description.textContent = "Enjoying Pro benefits: Unlimited saves, priority alerts, advanced analytics & more";
+        actionBtn.innerHTML = '<i class="fas fa-cog"></i> Manage Membership';
+        actionBtn.href = 'profile.html#membership';
+        icon.innerHTML = '<i class="fas fa-star"></i>';
+    }
 }
 
 function updateUIForLoggedOutUser() {
     document.getElementById('loginBtn').style.display = 'inline-flex';
     document.getElementById('signupBtn').style.display = 'inline-flex';
     document.getElementById('userMenu').style.display = 'none';
+    
+    // Hide membership banner when logged out
+    const banner = document.getElementById('membershipBanner');
+    if (banner) {
+        banner.style.display = 'none';
+    }
     
     // Clear contact info
     document.getElementById('contactEmail').value = '';
