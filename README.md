@@ -1,4 +1,4 @@
-# HonestBroker - Deployment Guide
+# Sachabroker - Deployment Guide
 
 ## 🚀 How to Host Your Website on the Real Web
 
@@ -30,13 +30,13 @@ Your website is ready to be deployed! Here are the best FREE hosting options:
 
 4. **Create a new repository on GitHub**
    - Go to https://github.com/new
-   - Name it: `honestbroker` (or any name you prefer)
+   - Name it: `sachabroker` (or any name you prefer)
    - Don't initialize with README
    - Click "Create repository"
 
 5. **Push your code to GitHub**
    ```bash
-   git remote add origin https://github.com/YOUR-USERNAME/honestbroker.git
+   git remote add origin https://github.com/YOUR-USERNAME/sachabroker.git
    git branch -M main
    git push -u origin main
    ```
@@ -46,10 +46,10 @@ Your website is ready to be deployed! Here are the best FREE hosting options:
    - Click "Pages" in the left sidebar
    - Under "Source", select "main" branch
    - Click "Save"
-   - Your site will be live at: `https://YOUR-USERNAME.github.io/honestbroker/`
+   - Your site will be live at: `https://YOUR-USERNAME.github.io/sachabroker/`
 
 **Time to deploy: 5 minutes**  
-**URL: `https://YOUR-USERNAME.github.io/honestbroker/`**
+**URL: `https://YOUR-USERNAME.github.io/sachabroker/`**
 
 ---
 

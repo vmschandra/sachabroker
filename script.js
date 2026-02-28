@@ -22,7 +22,7 @@ async function verifyPassword(password, hashedPassword) {
 }
 
 // Encrypt sensitive data (for storage)
-function encryptData(data, key = 'honestbroker-secret-key-2026') {
+function encryptData(data, key = 'sachabroker-secret-key-2026') {
     try {
         // Simple XOR encryption for localStorage (better than plain text)
         // Note: For production, use a proper encryption library
@@ -39,7 +39,7 @@ function encryptData(data, key = 'honestbroker-secret-key-2026') {
 }
 
 // Decrypt sensitive data
-function decryptData(encryptedData, key = 'honestbroker-secret-key-2026') {
+function decryptData(encryptedData, key = 'sachabroker-secret-key-2026') {
     try {
         const encrypted = atob(encryptedData); // Base64 decode
         let decrypted = '';

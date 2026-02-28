@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# HonestBroker - Netlify CLI Deployment Script
+# Sachabroker - Netlify CLI Deployment Script
 
-echo "🚀 Deploying HonestBroker to Netlify..."
+echo "🚀 Deploying Sachabroker to Netlify..."
 
 # Check if netlify CLI is installed
 if ! command -v netlify &> /dev/null

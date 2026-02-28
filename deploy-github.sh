@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# HonestBroker - GitHub Pages Deployment Script
+# Sachabroker - GitHub Pages Deployment Script
 
-echo "🚀 Deploying HonestBroker to GitHub Pages..."
+echo "🚀 Deploying Sachabroker to GitHub Pages..."
 
 # Check if git is installed
 if ! command -v git &> /dev/null
@@ -20,14 +20,14 @@ fi
 
 # Get GitHub username
 read -p "Enter your GitHub username: " github_username
-read -p "Enter your repository name (e.g., honestbroker): " repo_name
+read -p "Enter your repository name (e.g., sachabroker): " repo_name
 
 # Initialize git if not already initialized
 if [ ! -d ".git" ]; then
     echo "📦 Initializing Git repository..."
     git init
     git add .
-    git commit -m "Initial commit - HonestBroker"
+    git commit -m "Initial commit - Sachabroker"
 else
     echo "📦 Git repository already initialized"
     git add .

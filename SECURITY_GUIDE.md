@@ -1,4 +1,4 @@
-# 🔐 Security & Encryption Guide - HonestBroker
+# 🔐 Security & Encryption Guide - Sachabroker
 
 ## What We've Encrypted
 

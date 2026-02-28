@@ -14,13 +14,13 @@ Copy this checklist and check off each step as you complete it!
 - [ ] **Step 4:** Login to your GitHub account (vmschandra)
 - [ ] **Step 5:** Click "Authorize Vercel"
 - [ ] **Step 6:** Click "Add New..." → "Project"
-- [ ] **Step 7:** Find "realestate" repository
+ - [ ] **Step 7:** Find "sachabroker" repository
 - [ ] **Step 8:** Click "Import"
 - [ ] **Step 9:** Click "Deploy"
 - [ ] **Step 10:** Wait 1 minute
 - [ ] **Step 11:** ✅ Write down your Vercel URL: `___________________________`
 
-**Example URL:** https://realestate-abc123.vercel.app
+**Example URL:** https://sachabroker-abc123.vercel.app
 
 ---
 
@@ -53,7 +53,7 @@ Copy this checklist and check off each step as you complete it!
 #### On Vercel:
 
 - [ ] **Step 12:** Go to Vercel Dashboard
-- [ ] **Step 13:** Click your "realestate" project
+- [ ] **Step 13:** Click your "sachabroker" project
 - [ ] **Step 14:** Click "Settings" tab
 - [ ] **Step 15:** Click "Domains" (left sidebar)
 - [ ] **Step 16:** Type: `sachabroker.cm`
@@ -147,7 +147,7 @@ Copy this checklist and check off each step as you complete it!
 ### Day 6-7: Add API Keys to Vercel
 
 - [ ] **Step 1:** Go to Vercel Dashboard
-- [ ] **Step 2:** Click your "realestate" project
+- [ ] **Step 2:** Click your "sachabroker" project
 - [ ] **Step 3:** Click "Settings" tab
 - [ ] **Step 4:** Click "Environment Variables" (left)
 - [ ] **Step 5:** Add Variable 1:

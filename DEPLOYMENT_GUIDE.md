@@ -13,13 +13,13 @@
 
 1. In Vercel, click "Add New..." button (top right)
 2. Click "Project"
-3. Find "realestate" in your repositories list
+3. Find "sachabroker" in your repositories list
 4. Click "Import"
 5. Click "Deploy" (bottom)
 6. Wait 30 seconds
 7. ✅ Your site is LIVE!
 
-You'll get a URL like: `https://realestate-abc123.vercel.app`
+You'll get a URL like: `https://sachabroker-abc123.vercel.app`
 
 ## Step 3: Connect Your Domain (sachabroker.cm)
 
@@ -264,7 +264,7 @@ You'll need these later!
 
 **Website not loading?**
 - Wait 48 hours for domain DNS to propagate
-- Try: https://realestate-abc123.vercel.app (your Vercel URL)
+- Try: https://sachabroker-abc123.vercel.app (your Vercel URL)
 
 **Domain not connecting?**
 - Check Namecheap DNS records are correct
