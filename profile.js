@@ -67,6 +67,8 @@ function displayAccountType() {
     const listerSection = document.getElementById('listerSection');
     const listerDashboardLink = document.getElementById('listerDashboardLink');
     const listerDashboardDropdownLink = document.getElementById('listerDashboardDropdownLink');
+    const searcherDashboardNavLink = document.getElementById('searcherDashboardNavLink');
+    const searcherDashboardDropdownLink = document.getElementById('searcherDashboardDropdownLink');
     
     if (!accountTypeDisplay) return;
     
@@ -96,6 +98,10 @@ function displayAccountType() {
         if (listerDashboardLink) listerDashboardLink.style.display = 'none';
         if (listerDashboardDropdownLink) listerDashboardDropdownLink.style.display = 'none';
         
+        // Show searcher dashboard links
+        if (searcherDashboardNavLink) searcherDashboardNavLink.style.display = 'block';
+        if (searcherDashboardDropdownLink) searcherDashboardDropdownLink.style.display = 'block';
+        
         // Load searcher preferences
         loadSearcherPreferences();
     } else {
@@ -120,6 +126,10 @@ function displayAccountType() {
         // Show lister dashboard links
         if (listerDashboardLink) listerDashboardLink.style.display = 'block';
         if (listerDashboardDropdownLink) listerDashboardDropdownLink.style.display = 'block';
+        
+        // Hide searcher dashboard links
+        if (searcherDashboardNavLink) searcherDashboardNavLink.style.display = 'none';
+        if (searcherDashboardDropdownLink) searcherDashboardDropdownLink.style.display = 'none';
         
         // Load lister profile data
         loadListerProfile();

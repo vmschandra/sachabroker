@@ -1415,6 +1415,17 @@ function updateUIForLoggedInUser() {
         if (listerDashboardDropdownLink) listerDashboardDropdownLink.style.display = 'none';
     }
     
+    // Show/hide searcher dashboard link based on account type
+    const searcherDashboardLink = document.getElementById('searcherDashboardLink');
+    const searcherDashboardDropdownLink = document.getElementById('searcherDashboardDropdownLink');
+    if (currentUser && currentUser.accountType === 'searcher') {
+        if (searcherDashboardLink) searcherDashboardLink.style.display = 'block';
+        if (searcherDashboardDropdownLink) searcherDashboardDropdownLink.style.display = 'block';
+    } else {
+        if (searcherDashboardLink) searcherDashboardLink.style.display = 'none';
+        if (searcherDashboardDropdownLink) searcherDashboardDropdownLink.style.display = 'none';
+    }
+    
     // Pre-fill contact info in property form (only on index.html)
     const contactEmail = document.getElementById('contactEmail');
     const contactPhone = document.getElementById('contactPhone');
