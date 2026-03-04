@@ -1521,6 +1521,167 @@ footer .container {
     text-decoration: underline;
 }
 
+/* ==================== LISTER ONBOARDING STYLES ==================== */
+.lister-onboarding {
+    max-width: 650px;
+}
+
+.lister-onboarding .progress-fill.lister {
+    background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.lister-onboarding .progress-steps .step.active {
+    background: #22c55e;
+}
+
+.lister-onboarding .progress-steps .step.completed {
+    background: #16a34a;
+}
+
+.lister-header {
+    position: relative;
+}
+
+.lister-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    color: #166534;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.lister-badge i {
+    font-size: 1rem;
+}
+
+/* Lister Onboarding Steps */
+.lister-onboarding-step {
+    display: none;
+    animation: fadeInUp 0.4s ease;
+}
+
+.lister-onboarding-step.active {
+    display: block;
+}
+
+.lister-onboarding-step h3 {
+    color: #166534;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #dcfce7;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Business Type Options */
+.option-buttons.business-type-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.business-type-options .option-btn span {
+    padding: 1rem 0.5rem;
+}
+
+.business-type-options .option-btn span i {
+    font-size: 1.25rem;
+    color: #166534;
+}
+
+.business-type-options .option-btn input[type="radio"]:checked + span {
+    border-color: #22c55e;
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(22, 163, 74, 0.1));
+}
+
+/* Field Hints */
+.field-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.35rem;
+}
+
+/* Bank Info Notice */
+.bank-info-notice {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    color: #1e40af;
+    font-size: 0.9rem;
+}
+
+.bank-info-notice i {
+    font-size: 1.25rem;
+}
+
+/* Checkbox Label */
+.checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #4b5563;
+    line-height: 1.5;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: #22c55e;
+}
+
+/* Textarea styles */
+.lister-onboarding-step textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+/* Select dropdown in lister form */
+.lister-onboarding-step select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    cursor: pointer;
+}
+
+/* Lister form green accent */
+.lister-onboarding .btn-primary {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.lister-onboarding .btn-primary:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+/* Responsive for lister onboarding */
+@media (max-width: 600px) {
+    .option-buttons.business-type-options {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .onboarding-modal {

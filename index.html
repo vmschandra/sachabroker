@@ -548,6 +548,209 @@
         </div>
     </div>
 
-    <script src="script.js?v=3.1"></script>
+    <!-- Lister Onboarding Modal -->
+    <div id="listerOnboardingModal" class="modal">
+        <div class="modal-content onboarding-modal lister-onboarding">
+            <div class="onboarding-container">
+                <!-- Progress Bar -->
+                <div class="onboarding-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill lister" id="listerOnboardingProgress"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <span class="step active" data-step="1">1</span>
+                        <span class="step" data-step="2">2</span>
+                        <span class="step" data-step="3">3</span>
+                        <span class="step" data-step="4">4</span>
+                    </div>
+                </div>
+
+                <div class="onboarding-header lister-header">
+                    <div class="lister-badge">
+                        <i class="fas fa-home"></i> Property Lister
+                    </div>
+                    <h2><i class="fas fa-clipboard-list"></i> Complete Your Seller Profile</h2>
+                    <p>Set up your account to start listing properties</p>
+                </div>
+
+                <form id="listerOnboardingForm">
+                    <!-- Step 1: Personal/Business Information -->
+                    <div class="lister-onboarding-step active" data-step="1">
+                        <h3><i class="fas fa-user-tie"></i> Personal / Business Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="listerFullName"><i class="fas fa-user"></i> Full Name / Business Name *</label>
+                            <input type="text" id="listerFullName" required placeholder="Enter your name or business name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="listerPhone"><i class="fas fa-phone"></i> Phone Number *</label>
+                            <input type="tel" id="listerPhone" required placeholder="+91 98765 43210">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="listerEmail"><i class="fas fa-envelope"></i> Business Email *</label>
+                            <input type="email" id="listerEmail" required placeholder="business@example.com">
+                            <small class="field-hint">This can be different from your account email</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-briefcase"></i> Business Type *</label>
+                            <div class="option-buttons business-type-options">
+                                <label class="option-btn">
+                                    <input type="radio" name="businessType" value="owner" required>
+                                    <span><i class="fas fa-user"></i> Property Owner</span>
+                                </label>
+                                <label class="option-btn">
+                                    <input type="radio" name="businessType" value="broker" required>
+                                    <span><i class="fas fa-handshake"></i> Broker</span>
+                                </label>
+                                <label class="option-btn">
+                                    <input type="radio" name="businessType" value="agent" required>
+                                    <span><i class="fas fa-id-badge"></i> Agent</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Business Details -->
+                    <div class="lister-onboarding-step" data-step="2">
+                        <h3><i class="fas fa-building"></i> Business Details</h3>
+                        <p class="step-description">Provide your business registration details (optional for individual owners)</p>
+                        
+                        <div class="form-group">
+                            <label for="businessRegNumber"><i class="fas fa-file-alt"></i> Business Registration Number</label>
+                            <input type="text" id="businessRegNumber" placeholder="e.g., CIN, Registration ID">
+                            <small class="field-hint">Optional for individual property owners</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reraRegNumber"><i class="fas fa-certificate"></i> RERA Registration Number</label>
+                            <input type="text" id="reraRegNumber" placeholder="e.g., RERA/KA/12345">
+                            <small class="field-hint">Required for brokers and agents in most states</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gstNumber"><i class="fas fa-receipt"></i> GST Number</label>
+                            <input type="text" id="gstNumber" placeholder="e.g., 22AAAAA0000A1Z5" maxlength="15">
+                            <small class="field-hint">Required if annual turnover exceeds ₹20 lakhs</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="panNumber"><i class="fas fa-id-card"></i> PAN Number *</label>
+                            <input type="text" id="panNumber" required placeholder="e.g., ABCDE1234F" maxlength="10" style="text-transform: uppercase;">
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Address -->
+                    <div class="lister-onboarding-step" data-step="3">
+                        <h3><i class="fas fa-map-marker-alt"></i> Business Address</h3>
+                        
+                        <div class="form-group">
+                            <label for="listerAddress"><i class="fas fa-road"></i> Street Address *</label>
+                            <input type="text" id="listerAddress" required placeholder="Enter your complete address">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> City, State & Pincode *</label>
+                            <div class="form-row-3">
+                                <input type="text" id="listerCity" required placeholder="City">
+                                <input type="text" id="listerState" required placeholder="State">
+                                <input type="text" id="listerPincode" required placeholder="Pincode" maxlength="6">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="operatingAreas"><i class="fas fa-map"></i> Operating Areas *</label>
+                            <textarea id="operatingAreas" required placeholder="List the areas where you operate (e.g., Bangalore, Mysore, Hyderabad)" rows="3"></textarea>
+                            <small class="field-hint">Separate multiple areas with commas</small>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Bank Account Details -->
+                    <div class="lister-onboarding-step" data-step="4">
+                        <h3><i class="fas fa-university"></i> Bank Account for Payments</h3>
+                        <p class="step-description">Your earnings from property deals will be credited here</p>
+                        
+                        <div class="bank-info-notice">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Your bank details are encrypted and securely stored</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accountHolderName"><i class="fas fa-user"></i> Account Holder Name *</label>
+                            <input type="text" id="accountHolderName" required placeholder="Name as per bank account">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bankName"><i class="fas fa-university"></i> Bank Name *</label>
+                            <select id="bankName" required>
+                                <option value="">Select Bank</option>
+                                <option value="sbi">State Bank of India</option>
+                                <option value="hdfc">HDFC Bank</option>
+                                <option value="icici">ICICI Bank</option>
+                                <option value="axis">Axis Bank</option>
+                                <option value="kotak">Kotak Mahindra Bank</option>
+                                <option value="pnb">Punjab National Bank</option>
+                                <option value="bob">Bank of Baroda</option>
+                                <option value="canara">Canara Bank</option>
+                                <option value="union">Union Bank of India</option>
+                                <option value="idbi">IDBI Bank</option>
+                                <option value="yes">Yes Bank</option>
+                                <option value="indusind">IndusInd Bank</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="otherBankGroup" style="display: none;">
+                            <label for="otherBankName"><i class="fas fa-university"></i> Enter Bank Name *</label>
+                            <input type="text" id="otherBankName" placeholder="Enter your bank name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accountNumber"><i class="fas fa-credit-card"></i> Account Number *</label>
+                            <input type="text" id="accountNumber" required placeholder="Enter account number" maxlength="18">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmAccountNumber"><i class="fas fa-credit-card"></i> Confirm Account Number *</label>
+                            <input type="text" id="confirmAccountNumber" required placeholder="Re-enter account number" maxlength="18">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ifscCode"><i class="fas fa-barcode"></i> IFSC Code *</label>
+                            <input type="text" id="ifscCode" required placeholder="e.g., SBIN0001234" maxlength="11" style="text-transform: uppercase;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="bankTermsAgree" required>
+                                <span>I confirm that the bank account details provided are correct and belong to me/my business</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="onboarding-nav">
+                        <button type="button" class="btn btn-secondary" id="listerOnboardingPrevBtn" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="listerOnboardingNextBtn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-success" id="listerOnboardingSubmitBtn" style="display: none;">
+                            <i class="fas fa-check"></i> Complete Setup
+                        </button>
+                    </div>
+                </form>
+
+                <div class="onboarding-skip">
+                    <a href="#" onclick="skipListerOnboarding()">Skip for now →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3.2"></script>
 </body>
 </html>

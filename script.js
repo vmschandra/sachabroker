@@ -293,6 +293,19 @@ function setupEventListeners() {
     document.getElementById('onboardingNextBtn')?.addEventListener('click', nextOnboardingStep);
     document.getElementById('onboardingPrevBtn')?.addEventListener('click', prevOnboardingStep);
     
+    // Lister Onboarding form and buttons
+    document.getElementById('listerOnboardingForm')?.addEventListener('submit', handleListerOnboarding);
+    document.getElementById('listerOnboardingNextBtn')?.addEventListener('click', nextListerOnboardingStep);
+    document.getElementById('listerOnboardingPrevBtn')?.addEventListener('click', prevListerOnboardingStep);
+    
+    // Bank name dropdown change handler
+    document.getElementById('bankName')?.addEventListener('change', function() {
+        const otherBankGroup = document.getElementById('otherBankGroup');
+        if (otherBankGroup) {
+            otherBankGroup.style.display = this.value === 'other' ? 'block' : 'none';
+        }
+    });
+    
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -772,8 +785,8 @@ function handleVerification(e) {
         if (currentUser.accountType === 'searcher') {
             showSearcherOnboarding();
         } else {
-            // For listers, redirect to profile
-            window.location.href = 'profile.html';
+            // For listers, show lister onboarding
+            showListerOnboarding();
         }
     }, 1000);
 }
@@ -968,6 +981,246 @@ function handleSearcherOnboarding(e) {
 function skipOnboarding() {
     closeAuthModal('searcherOnboardingModal');
     showNotification('You can complete your profile later from the Profile page.', 'info');
+    
+    // Redirect to dashboard
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1000);
+}
+
+// ==================== LISTER ONBOARDING ====================
+
+let currentListerOnboardingStep = 1;
+const totalListerOnboardingSteps = 4;
+
+// Show Lister Onboarding Modal
+function showListerOnboarding() {
+    const modal = document.getElementById('listerOnboardingModal');
+    if (!modal) return;
+    
+    // Pre-fill known data
+    if (currentUser) {
+        document.getElementById('listerFullName').value = currentUser.name || '';
+        document.getElementById('listerPhone').value = currentUser.phone || '';
+        document.getElementById('listerEmail').value = currentUser.email || '';
+    }
+    
+    // Reset to step 1
+    currentListerOnboardingStep = 1;
+    updateListerOnboardingStep();
+    
+    modal.style.display = 'block';
+}
+
+// Update Lister Onboarding Step Display
+function updateListerOnboardingStep() {
+    // Update progress bar
+    const progressFill = document.getElementById('listerOnboardingProgress');
+    progressFill.style.width = `${(currentListerOnboardingStep / totalListerOnboardingSteps) * 100}%`;
+    
+    // Update step indicators
+    document.querySelectorAll('.lister-onboarding .progress-steps .step').forEach((step, index) => {
+        step.classList.remove('active', 'completed');
+        if (index + 1 < currentListerOnboardingStep) {
+            step.classList.add('completed');
+        } else if (index + 1 === currentListerOnboardingStep) {
+            step.classList.add('active');
+        }
+    });
+    
+    // Show/hide steps
+    document.querySelectorAll('.lister-onboarding-step').forEach((step, index) => {
+        step.classList.remove('active');
+        if (index + 1 === currentListerOnboardingStep) {
+            step.classList.add('active');
+        }
+    });
+    
+    // Update buttons
+    const prevBtn = document.getElementById('listerOnboardingPrevBtn');
+    const nextBtn = document.getElementById('listerOnboardingNextBtn');
+    const submitBtn = document.getElementById('listerOnboardingSubmitBtn');
+    
+    prevBtn.style.display = currentListerOnboardingStep > 1 ? 'flex' : 'none';
+    nextBtn.style.display = currentListerOnboardingStep < totalListerOnboardingSteps ? 'flex' : 'none';
+    submitBtn.style.display = currentListerOnboardingStep === totalListerOnboardingSteps ? 'flex' : 'none';
+}
+
+// Validate Current Lister Onboarding Step
+function validateListerOnboardingStep() {
+    const currentStepEl = document.querySelector(`.lister-onboarding-step[data-step="${currentListerOnboardingStep}"]`);
+    const requiredFields = currentStepEl.querySelectorAll('[required]');
+    
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (field.type === 'radio') {
+            const radioGroup = currentStepEl.querySelectorAll(`input[name="${field.name}"]`);
+            const isChecked = Array.from(radioGroup).some(r => r.checked);
+            if (!isChecked) {
+                isValid = false;
+            }
+        } else if (field.type === 'checkbox') {
+            if (!field.checked) {
+                isValid = false;
+            }
+        } else if (!field.value.trim()) {
+            isValid = false;
+            field.classList.add('error');
+        } else {
+            field.classList.remove('error');
+        }
+    });
+    
+    // Additional validations
+    if (currentListerOnboardingStep === 2) {
+        // Validate PAN format
+        const pan = document.getElementById('panNumber').value.toUpperCase();
+        const panRegex = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+        if (pan && !panRegex.test(pan)) {
+            showNotification('Please enter a valid PAN number (e.g., ABCDE1234F)', 'error');
+            return false;
+        }
+        
+        // Validate GST format if provided
+        const gst = document.getElementById('gstNumber').value.toUpperCase();
+        const gstRegex = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
+        if (gst && !gstRegex.test(gst)) {
+            showNotification('Please enter a valid GST number', 'error');
+            return false;
+        }
+    }
+    
+    if (currentListerOnboardingStep === 4) {
+        // Validate account numbers match
+        const accNum = document.getElementById('accountNumber').value;
+        const confirmAccNum = document.getElementById('confirmAccountNumber').value;
+        
+        if (accNum !== confirmAccNum) {
+            showNotification('Account numbers do not match!', 'error');
+            return false;
+        }
+        
+        // Validate IFSC format
+        const ifsc = document.getElementById('ifscCode').value.toUpperCase();
+        const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+        if (!ifscRegex.test(ifsc)) {
+            showNotification('Please enter a valid IFSC code (e.g., SBIN0001234)', 'error');
+            return false;
+        }
+    }
+    
+    if (!isValid) {
+        showNotification('Please fill in all required fields!', 'error');
+    }
+    
+    return isValid;
+}
+
+// Go to Next Lister Onboarding Step
+function nextListerOnboardingStep() {
+    if (!validateListerOnboardingStep()) return;
+    
+    if (currentListerOnboardingStep < totalListerOnboardingSteps) {
+        currentListerOnboardingStep++;
+        updateListerOnboardingStep();
+    }
+}
+
+// Go to Previous Lister Onboarding Step
+function prevListerOnboardingStep() {
+    if (currentListerOnboardingStep > 1) {
+        currentListerOnboardingStep--;
+        updateListerOnboardingStep();
+    }
+}
+
+// Handle Lister Onboarding Form Submit
+function handleListerOnboarding(e) {
+    e.preventDefault();
+    
+    if (!validateListerOnboardingStep()) return;
+    
+    // Collect all data
+    const onboardingData = {
+        fullName: document.getElementById('listerFullName').value,
+        phone: document.getElementById('listerPhone').value,
+        email: document.getElementById('listerEmail').value,
+        businessType: document.querySelector('input[name="businessType"]:checked')?.value,
+        businessDetails: {
+            registrationNumber: document.getElementById('businessRegNumber').value,
+            reraNumber: document.getElementById('reraRegNumber').value,
+            gstNumber: document.getElementById('gstNumber').value.toUpperCase(),
+            panNumber: document.getElementById('panNumber').value.toUpperCase()
+        },
+        address: {
+            street: document.getElementById('listerAddress').value,
+            city: document.getElementById('listerCity').value,
+            state: document.getElementById('listerState').value,
+            pincode: document.getElementById('listerPincode').value
+        },
+        operatingAreas: document.getElementById('operatingAreas').value.split(',').map(a => a.trim()).filter(a => a),
+        bankDetails: {
+            accountHolderName: document.getElementById('accountHolderName').value,
+            bankName: document.getElementById('bankName').value === 'other' 
+                ? document.getElementById('otherBankName').value 
+                : document.getElementById('bankName').options[document.getElementById('bankName').selectedIndex].text,
+            accountNumber: document.getElementById('accountNumber').value,
+            ifscCode: document.getElementById('ifscCode').value.toUpperCase()
+        },
+        completedAt: new Date().toISOString()
+    };
+    
+    // Encrypt bank details before saving
+    const encryptedBankDetails = encryptData(onboardingData.bankDetails);
+    
+    // Save to localStorage (bank details encrypted separately)
+    const dataToSave = { ...onboardingData };
+    dataToSave.bankDetails = 'encrypted'; // Placeholder
+    localStorage.setItem(`lister_onboarding_${currentUser.id}`, JSON.stringify(dataToSave));
+    localStorage.setItem(`lister_bank_${currentUser.id}`, encryptedBankDetails);
+    
+    // Update current user
+    currentUser.onboardingComplete = true;
+    currentUser.name = onboardingData.fullName;
+    currentUser.phone = onboardingData.phone;
+    
+    const encryptedSession = encryptData(currentUser);
+    if (encryptedSession) {
+        localStorage.setItem('currentUser_encrypted', encryptedSession);
+    }
+    
+    // Also update in users array
+    const userIndex = users.findIndex(u => u.id === currentUser.id);
+    if (userIndex !== -1) {
+        users[userIndex].name = onboardingData.fullName;
+        users[userIndex].phone = onboardingData.phone;
+        users[userIndex].onboardingComplete = true;
+        
+        const encrypted = encryptData(users);
+        if (encrypted) {
+            localStorage.setItem('users_encrypted', encrypted);
+        }
+    }
+    
+    // Close modal
+    closeAuthModal('listerOnboardingModal');
+    
+    // Update UI
+    updateUIForLoggedInUser();
+    
+    showNotification('Seller profile completed! You can now start listing properties.', 'success');
+    
+    // Redirect to dashboard to list properties
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1500);
+}
+
+// Skip Lister Onboarding
+function skipListerOnboarding() {
+    closeAuthModal('listerOnboardingModal');
+    showNotification('You can complete your seller profile later from the Profile page.', 'info');
     
     // Redirect to dashboard
     setTimeout(() => {
