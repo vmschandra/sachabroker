@@ -1404,6 +1404,17 @@ function updateUIForLoggedInUser() {
         userName.innerHTML = `${currentUser.name} <span class="user-type-badge ${badgeClass}"><i class="fas ${badgeIcon}"></i> ${badgeText}</span>`;
     }
     
+    // Show/hide lister dashboard link based on account type
+    const listerDashboardLink = document.getElementById('listerDashboardLink');
+    const listerDashboardDropdownLink = document.getElementById('listerDashboardDropdownLink');
+    if (currentUser && currentUser.accountType === 'lister') {
+        if (listerDashboardLink) listerDashboardLink.style.display = 'block';
+        if (listerDashboardDropdownLink) listerDashboardDropdownLink.style.display = 'block';
+    } else {
+        if (listerDashboardLink) listerDashboardLink.style.display = 'none';
+        if (listerDashboardDropdownLink) listerDashboardDropdownLink.style.display = 'none';
+    }
+    
     // Pre-fill contact info in property form (only on index.html)
     const contactEmail = document.getElementById('contactEmail');
     const contactPhone = document.getElementById('contactPhone');
