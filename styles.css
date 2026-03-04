@@ -1272,6 +1272,287 @@ footer .container {
     border-left-color: #22c55e;
 }
 
+/* ==================== ONBOARDING MODAL STYLES ==================== */
+.onboarding-modal {
+    max-width: 600px;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.onboarding-container {
+    padding: 2rem;
+}
+
+/* Progress Bar */
+.onboarding-progress {
+    margin-bottom: 2rem;
+}
+
+.progress-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 33%;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.progress-steps::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: #e5e7eb;
+    z-index: 0;
+}
+
+.progress-steps .step {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.progress-steps .step.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+}
+
+.progress-steps .step.completed {
+    background: #22c55e;
+    color: white;
+}
+
+/* Onboarding Header */
+.onboarding-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.onboarding-header h2 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.onboarding-header p {
+    color: #666;
+}
+
+/* Onboarding Steps */
+.onboarding-step {
+    display: none;
+    animation: fadeInUp 0.4s ease;
+}
+
+.onboarding-step.active {
+    display: block;
+}
+
+.onboarding-step h3 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--light-bg);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.step-description {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Form Row 3 columns */
+.form-row-3 {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    gap: 0.75rem;
+}
+
+/* Option Buttons (Rent/Buy, Property Type) */
+.option-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.option-buttons.property-type-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.option-btn {
+    flex: 1;
+    min-width: 120px;
+    cursor: pointer;
+}
+
+.option-btn input[type="radio"] {
+    display: none;
+}
+
+.option-btn span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--light-bg);
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.option-btn span i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.option-btn input[type="radio"]:checked + span {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.1), rgba(59, 130, 246, 0.1));
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.15);
+}
+
+.option-btn:hover span {
+    border-color: var(--light-blue);
+    transform: translateY(-2px);
+}
+
+/* Budget Inputs */
+.budget-inputs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.budget-field {
+    flex: 1;
+    position: relative;
+}
+
+.budget-field .currency {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-weight: 600;
+}
+
+.budget-field input {
+    padding-left: 30px !important;
+}
+
+.budget-separator {
+    color: #666;
+    font-weight: 500;
+}
+
+/* Navigation Buttons */
+.onboarding-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.onboarding-nav .btn {
+    flex: 1;
+    padding: 0.875rem 1.5rem;
+}
+
+.onboarding-nav .btn-success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.onboarding-nav .btn-success:hover {
+    background: linear-gradient(135deg, #16a34a, #15803d);
+}
+
+/* Skip Link */
+.onboarding-skip {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.onboarding-skip a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.onboarding-skip a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .onboarding-modal {
+        width: 95%;
+        margin: 5% auto;
+    }
+    
+    .onboarding-container {
+        padding: 1.5rem;
+    }
+    
+    .form-row-3 {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .form-row-3 input:last-child {
+        grid-column: span 2;
+    }
+    
+    .option-buttons.property-type-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .budget-inputs {
+        flex-direction: column;
+    }
+    
+    .budget-separator {
+        display: none;
+    }
+}
+
 /* Animations */
 @keyframes fadeIn {
     from {

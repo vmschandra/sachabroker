@@ -398,6 +398,156 @@
         </div>
     </div>
 
-    <script src="script.js?v=3.0"></script>
+    <!-- Searcher Onboarding Modal -->
+    <div id="searcherOnboardingModal" class="modal">
+        <div class="modal-content onboarding-modal">
+            <div class="onboarding-container">
+                <!-- Progress Bar -->
+                <div class="onboarding-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="onboardingProgress"></div>
+                    </div>
+                    <div class="progress-steps">
+                        <span class="step active" data-step="1">1</span>
+                        <span class="step" data-step="2">2</span>
+                        <span class="step" data-step="3">3</span>
+                    </div>
+                </div>
+
+                <div class="onboarding-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Complete Your Profile</h2>
+                    <p>Help us find the perfect property for you</p>
+                </div>
+
+                <form id="searcherOnboardingForm">
+                    <!-- Step 1: Personal Information -->
+                    <div class="onboarding-step active" data-step="1">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="onboardFullName"><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="onboardFullName" required placeholder="Enter your full name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="onboardPhone"><i class="fas fa-phone"></i> Phone Number *</label>
+                            <input type="tel" id="onboardPhone" required placeholder="+91 98765 43210">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Current Location *</label>
+                            <div class="form-row-3">
+                                <input type="text" id="onboardCity" required placeholder="City">
+                                <input type="text" id="onboardState" required placeholder="State">
+                                <input type="text" id="onboardPincode" required placeholder="Pincode" maxlength="6">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Property Preferences -->
+                    <div class="onboarding-step" data-step="2">
+                        <h3><i class="fas fa-home"></i> Property Preferences</h3>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-search"></i> Looking to... *</label>
+                            <div class="option-buttons">
+                                <label class="option-btn">
+                                    <input type="radio" name="lookingFor" value="rent" required>
+                                    <span><i class="fas fa-key"></i> Rent</span>
+                                </label>
+                                <label class="option-btn">
+                                    <input type="radio" name="lookingFor" value="buy" required>
+                                    <span><i class="fas fa-shopping-cart"></i> Buy</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-building"></i> Property Type *</label>
+                            <div class="option-buttons property-type-options">
+                                <label class="option-btn">
+                                    <input type="radio" name="propertyType" value="apartment" required>
+                                    <span><i class="fas fa-building"></i> Apartment</span>
+                                </label>
+                                <label class="option-btn">
+                                    <input type="radio" name="propertyType" value="house" required>
+                                    <span><i class="fas fa-home"></i> House/Villa</span>
+                                </label>
+                                <label class="option-btn">
+                                    <input type="radio" name="propertyType" value="commercial" required>
+                                    <span><i class="fas fa-store"></i> Commercial</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-rupee-sign"></i> Budget Range *</label>
+                            <div class="budget-inputs">
+                                <div class="budget-field">
+                                    <span class="currency">₹</span>
+                                    <input type="number" id="onboardMinBudget" required placeholder="Min Budget">
+                                </div>
+                                <span class="budget-separator">to</span>
+                                <div class="budget-field">
+                                    <span class="currency">₹</span>
+                                    <input type="number" id="onboardMaxBudget" required placeholder="Max Budget">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Preferred Locations -->
+                    <div class="onboarding-step" data-step="3">
+                        <h3><i class="fas fa-map-marked-alt"></i> Preferred Locations</h3>
+                        <p class="step-description">Add up to 5 locations where you'd like to find a property</p>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-pin"></i> Location 1 *</label>
+                            <input type="text" id="preferredLocation1" required placeholder="e.g., Whitefield, Bangalore">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-pin"></i> Location 2</label>
+                            <input type="text" id="preferredLocation2" placeholder="e.g., Koramangala, Bangalore">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-pin"></i> Location 3</label>
+                            <input type="text" id="preferredLocation3" placeholder="e.g., HSR Layout, Bangalore">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-pin"></i> Location 4</label>
+                            <input type="text" id="preferredLocation4" placeholder="e.g., Indiranagar, Bangalore">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-map-pin"></i> Location 5</label>
+                            <input type="text" id="preferredLocation5" placeholder="e.g., Marathahalli, Bangalore">
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="onboarding-nav">
+                        <button type="button" class="btn btn-secondary" id="onboardingPrevBtn" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button type="button" class="btn btn-primary" id="onboardingNextBtn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-success" id="onboardingSubmitBtn" style="display: none;">
+                            <i class="fas fa-check"></i> Complete Profile
+                        </button>
+                    </div>
+                </form>
+
+                <div class="onboarding-skip">
+                    <a href="#" onclick="skipOnboarding()">Skip for now →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=3.1"></script>
 </body>
 </html>

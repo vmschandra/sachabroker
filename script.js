@@ -288,6 +288,11 @@ function setupEventListeners() {
         document.getElementById('loginAccountTypeSelection').style.display = 'none';
     });
     
+    // Searcher Onboarding form and buttons
+    document.getElementById('searcherOnboardingForm')?.addEventListener('submit', handleSearcherOnboarding);
+    document.getElementById('onboardingNextBtn')?.addEventListener('click', nextOnboardingStep);
+    document.getElementById('onboardingPrevBtn')?.addEventListener('click', prevOnboardingStep);
+    
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -742,7 +747,8 @@ function handleVerification(e) {
         email: pendingVerification.email, 
         phone: pendingVerification.phone,
         accountType: pendingVerification.accountType,
-        emailVerified: true
+        emailVerified: true,
+        onboardingComplete: false
     };
     const encryptedSession = encryptData(currentUser);
     if (encryptedSession) {
@@ -761,10 +767,212 @@ function handleVerification(e) {
     document.getElementById('verificationForm').reset();
     pendingVerification = null;
     
-    // Redirect to profile to complete setup
+    // Show onboarding based on account type
     setTimeout(() => {
-        window.location.href = 'profile.html';
+        if (currentUser.accountType === 'searcher') {
+            showSearcherOnboarding();
+        } else {
+            // For listers, redirect to profile
+            window.location.href = 'profile.html';
+        }
+    }, 1000);
+}
+
+// ==================== SEARCHER ONBOARDING ====================
+
+let currentOnboardingStep = 1;
+const totalOnboardingSteps = 3;
+
+// Show Searcher Onboarding Modal
+function showSearcherOnboarding() {
+    const modal = document.getElementById('searcherOnboardingModal');
+    if (!modal) return;
+    
+    // Pre-fill known data
+    if (currentUser) {
+        document.getElementById('onboardFullName').value = currentUser.name || '';
+        document.getElementById('onboardPhone').value = currentUser.phone || '';
+    }
+    
+    // Reset to step 1
+    currentOnboardingStep = 1;
+    updateOnboardingStep();
+    
+    modal.style.display = 'block';
+}
+
+// Update Onboarding Step Display
+function updateOnboardingStep() {
+    // Update progress bar
+    const progressFill = document.getElementById('onboardingProgress');
+    progressFill.style.width = `${(currentOnboardingStep / totalOnboardingSteps) * 100}%`;
+    
+    // Update step indicators
+    document.querySelectorAll('.progress-steps .step').forEach((step, index) => {
+        step.classList.remove('active', 'completed');
+        if (index + 1 < currentOnboardingStep) {
+            step.classList.add('completed');
+        } else if (index + 1 === currentOnboardingStep) {
+            step.classList.add('active');
+        }
+    });
+    
+    // Show/hide steps
+    document.querySelectorAll('.onboarding-step').forEach((step, index) => {
+        step.classList.remove('active');
+        if (index + 1 === currentOnboardingStep) {
+            step.classList.add('active');
+        }
+    });
+    
+    // Update buttons
+    const prevBtn = document.getElementById('onboardingPrevBtn');
+    const nextBtn = document.getElementById('onboardingNextBtn');
+    const submitBtn = document.getElementById('onboardingSubmitBtn');
+    
+    prevBtn.style.display = currentOnboardingStep > 1 ? 'flex' : 'none';
+    nextBtn.style.display = currentOnboardingStep < totalOnboardingSteps ? 'flex' : 'none';
+    submitBtn.style.display = currentOnboardingStep === totalOnboardingSteps ? 'flex' : 'none';
+}
+
+// Validate Current Onboarding Step
+function validateOnboardingStep() {
+    const currentStepEl = document.querySelector(`.onboarding-step[data-step="${currentOnboardingStep}"]`);
+    const requiredFields = currentStepEl.querySelectorAll('[required]');
+    
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (field.type === 'radio') {
+            const radioGroup = currentStepEl.querySelectorAll(`input[name="${field.name}"]`);
+            const isChecked = Array.from(radioGroup).some(r => r.checked);
+            if (!isChecked) {
+                isValid = false;
+            }
+        } else if (!field.value.trim()) {
+            isValid = false;
+            field.classList.add('error');
+        } else {
+            field.classList.remove('error');
+        }
+    });
+    
+    // Additional validation for step 2 (budget)
+    if (currentOnboardingStep === 2) {
+        const minBudget = parseInt(document.getElementById('onboardMinBudget').value);
+        const maxBudget = parseInt(document.getElementById('onboardMaxBudget').value);
+        
+        if (minBudget && maxBudget && minBudget > maxBudget) {
+            showNotification('Minimum budget cannot be greater than maximum budget!', 'error');
+            return false;
+        }
+    }
+    
+    if (!isValid) {
+        showNotification('Please fill in all required fields!', 'error');
+    }
+    
+    return isValid;
+}
+
+// Go to Next Onboarding Step
+function nextOnboardingStep() {
+    if (!validateOnboardingStep()) return;
+    
+    if (currentOnboardingStep < totalOnboardingSteps) {
+        currentOnboardingStep++;
+        updateOnboardingStep();
+    }
+}
+
+// Go to Previous Onboarding Step
+function prevOnboardingStep() {
+    if (currentOnboardingStep > 1) {
+        currentOnboardingStep--;
+        updateOnboardingStep();
+    }
+}
+
+// Handle Searcher Onboarding Form Submit
+function handleSearcherOnboarding(e) {
+    e.preventDefault();
+    
+    if (!validateOnboardingStep()) return;
+    
+    // Collect all data
+    const onboardingData = {
+        fullName: document.getElementById('onboardFullName').value,
+        phone: document.getElementById('onboardPhone').value,
+        location: {
+            city: document.getElementById('onboardCity').value,
+            state: document.getElementById('onboardState').value,
+            pincode: document.getElementById('onboardPincode').value
+        },
+        lookingFor: document.querySelector('input[name="lookingFor"]:checked')?.value,
+        propertyType: document.querySelector('input[name="propertyType"]:checked')?.value,
+        budget: {
+            min: parseInt(document.getElementById('onboardMinBudget').value) || 0,
+            max: parseInt(document.getElementById('onboardMaxBudget').value) || 0
+        },
+        preferredLocations: [
+            document.getElementById('preferredLocation1').value,
+            document.getElementById('preferredLocation2').value,
+            document.getElementById('preferredLocation3').value,
+            document.getElementById('preferredLocation4').value,
+            document.getElementById('preferredLocation5').value
+        ].filter(loc => loc.trim() !== ''),
+        completedAt: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    localStorage.setItem(`searcher_onboarding_${currentUser.id}`, JSON.stringify(onboardingData));
+    
+    // Update current user
+    currentUser.onboardingComplete = true;
+    currentUser.name = onboardingData.fullName;
+    currentUser.phone = onboardingData.phone;
+    
+    const encryptedSession = encryptData(currentUser);
+    if (encryptedSession) {
+        localStorage.setItem('currentUser_encrypted', encryptedSession);
+    }
+    
+    // Also update in users array
+    const userIndex = users.findIndex(u => u.id === currentUser.id);
+    if (userIndex !== -1) {
+        users[userIndex].name = onboardingData.fullName;
+        users[userIndex].phone = onboardingData.phone;
+        users[userIndex].onboardingComplete = true;
+        
+        const encrypted = encryptData(users);
+        if (encrypted) {
+            localStorage.setItem('users_encrypted', encrypted);
+        }
+    }
+    
+    // Close modal
+    closeAuthModal('searcherOnboardingModal');
+    
+    // Update UI
+    updateUIForLoggedInUser();
+    
+    showNotification('Profile completed successfully! Let\'s find your dream property.', 'success');
+    
+    // Redirect to dashboard to browse properties
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
     }, 1500);
+}
+
+// Skip Onboarding
+function skipOnboarding() {
+    closeAuthModal('searcherOnboardingModal');
+    showNotification('You can complete your profile later from the Profile page.', 'info');
+    
+    // Redirect to dashboard
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 1000);
 }
 
 // Resend verification code
