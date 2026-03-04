@@ -280,6 +280,14 @@ function setupEventListeners() {
     document.getElementById('loginForm').addEventListener('submit', handleLogin);
     document.getElementById('signupForm').addEventListener('submit', handleSignup);
     
+    // Verification form
+    document.getElementById('verificationForm')?.addEventListener('submit', handleVerification);
+    
+    // Reset login account type selection when email changes
+    document.getElementById('loginEmail')?.addEventListener('input', () => {
+        document.getElementById('loginAccountTypeSelection').style.display = 'none';
+    });
+    
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
@@ -640,10 +648,21 @@ function showNotification(message, type = 'success') {
     }, 3000);
 }
 
+// Pending verification user storage
+let pendingVerification = null;
+
 // Authentication Functions
 
 async function handleSignup(e) {
     e.preventDefault();
+    
+    // Get account type
+    const accountTypeEl = document.querySelector('input[name="accountType"]:checked');
+    if (!accountTypeEl) {
+        showNotification('Please select an account type!', 'error');
+        return;
+    }
+    const accountType = accountTypeEl.value;
     
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
@@ -657,25 +676,106 @@ async function handleSignup(e) {
         return;
     }
     
-    // Check if user already exists
-    if (users.find(u => u.email === email)) {
-        showNotification('Email already registered!', 'error');
+    // Check if user already exists WITH SAME ACCOUNT TYPE
+    // Same email can have different account types (searcher + lister)
+    const existingUser = users.find(u => u.email === email && u.accountType === accountType);
+    if (existingUser) {
+        showNotification(`You already have a ${accountType === 'searcher' ? 'Buyer/Renter' : 'Seller/Lister'} account with this email!`, 'error');
         return;
     }
     
     // Hash the password
     const hashedPassword = await hashPassword(password);
     
-    // Create new user (password is now hashed!)
-    const newUser = {
+    // Store pending user for verification
+    pendingVerification = {
         id: Date.now(),
         name: name,
         email: email,
         phone: phone,
-        password: hashedPassword, // Stored as hash, not plain text
+        password: hashedPassword,
+        accountType: accountType,
+        emailVerified: false,
         createdAt: new Date().toISOString()
     };
     
+    // Show verification modal
+    closeAuthModal('signupModal');
+    document.getElementById('verificationEmail').textContent = email;
+    document.getElementById('verificationModal').style.display = 'block';
+    
+    // Simulate sending verification email
+    showNotification('Verification code sent to your email!', 'success');
+}
+
+// Handle email verification
+function handleVerification(e) {
+    e.preventDefault();
+    
+    const code = document.getElementById('verificationCode').value;
+    
+    // For demo purposes, accept 123456 as valid code
+    if (code !== '123456') {
+        showNotification('Invalid verification code!', 'error');
+        return;
+    }
+    
+    if (!pendingVerification) {
+        showNotification('No pending registration found!', 'error');
+        return;
+    }
+    
+    // Mark as verified and save user
+    pendingVerification.emailVerified = true;
+    users.push(pendingVerification);
+    
+    // Save encrypted user data
+    const encrypted = encryptData(users);
+    if (encrypted) {
+        localStorage.setItem('users_encrypted', encrypted);
+    }
+    
+    // Auto login
+    currentUser = { 
+        id: pendingVerification.id, 
+        name: pendingVerification.name, 
+        email: pendingVerification.email, 
+        phone: pendingVerification.phone,
+        accountType: pendingVerification.accountType,
+        emailVerified: true
+    };
+    const encryptedSession = encryptData(currentUser);
+    if (encryptedSession) {
+        localStorage.setItem('currentUser_encrypted', encryptedSession);
+    }
+    
+    // Close modal and update UI
+    closeAuthModal('verificationModal');
+    updateUIForLoggedInUser();
+    
+    const accountTypeLabel = currentUser.accountType === 'searcher' ? 'Property Searcher' : 'Property Lister';
+    showNotification(`Welcome, ${currentUser.name}! Your ${accountTypeLabel} account is now verified.`, 'success');
+    
+    // Reset forms
+    document.getElementById('signupForm').reset();
+    document.getElementById('verificationForm').reset();
+    pendingVerification = null;
+    
+    // Redirect to profile to complete setup
+    setTimeout(() => {
+        window.location.href = 'profile.html';
+    }, 1500);
+}
+
+// Resend verification code
+function resendVerificationCode() {
+    if (pendingVerification) {
+        showNotification('Verification code resent to ' + pendingVerification.email, 'success');
+    }
+}
+
+// Original signup completion code (keeping for reference)
+async function completeSignupWithoutVerification(newUser) {
     users.push(newUser);
     
     // Save encrypted user data
@@ -685,7 +785,13 @@ async function handleSignup(e) {
     }
     
     // Auto login (don't store password in session)
-    currentUser = { id: newUser.id, name: newUser.name, email: newUser.email, phone: newUser.phone };
+    currentUser = { 
+        id: newUser.id, 
+        name: newUser.name, 
+        email: newUser.email, 
+        phone: newUser.phone,
+        accountType: newUser.accountType 
+    };
     const encryptedSession = encryptData(currentUser);
     if (encryptedSession) {
         localStorage.setItem('currentUser_encrypted', encryptedSession);
@@ -712,15 +818,55 @@ async function handleLogin(e) {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
     
-    // Find user by email
-    const user = users.find(u => u.email === email);
+    // Find all users with this email
+    const matchingUsers = users.filter(u => u.email === email);
     
-    if (!user) {
+    if (matchingUsers.length === 0) {
         showNotification('Invalid email or password!', 'error');
         return;
     }
     
-    // Verify password hash
+    // Check if user has multiple account types
+    if (matchingUsers.length > 1) {
+        const accountTypeSelection = document.getElementById('loginAccountTypeSelection');
+        const selectedTypeEl = document.querySelector('input[name="loginAccountType"]:checked');
+        
+        // If account type selection is not visible, show it and wait for selection
+        if (accountTypeSelection.style.display === 'none') {
+            accountTypeSelection.style.display = 'block';
+            showNotification('You have multiple accounts. Please select which one to login to.', 'info');
+            return;
+        }
+        
+        // If no type selected, ask user to select
+        if (!selectedTypeEl) {
+            showNotification('Please select an account type to login!', 'error');
+            return;
+        }
+        
+        // Find the user with matching account type
+        const selectedType = selectedTypeEl.value;
+        const user = matchingUsers.find(u => u.accountType === selectedType);
+        
+        if (!user) {
+            showNotification(`You don't have a ${selectedType === 'searcher' ? 'Buyer/Renter' : 'Seller/Lister'} account!`, 'error');
+            return;
+        }
+        
+        // Verify password
+        const isValidPassword = await verifyPassword(password, user.password);
+        if (!isValidPassword) {
+            showNotification('Invalid email or password!', 'error');
+            return;
+        }
+        
+        // Login successful
+        loginUser(user);
+        return;
+    }
+    
+    // Single account - verify password
+    const user = matchingUsers[0];
     const isValidPassword = await verifyPassword(password, user.password);
     
     if (!isValidPassword) {
@@ -728,8 +874,21 @@ async function handleLogin(e) {
         return;
     }
     
+    // Login successful
+    loginUser(user);
+}
+
+// Helper function to complete login
+function loginUser(user) {
     // Set current user (don't include password)
-    currentUser = { id: user.id, name: user.name, email: user.email, phone: user.phone };
+    currentUser = { 
+        id: user.id, 
+        name: user.name, 
+        email: user.email, 
+        phone: user.phone,
+        accountType: user.accountType || 'searcher',
+        emailVerified: user.emailVerified || false
+    };
     const encryptedSession = encryptData(currentUser);
     if (encryptedSession) {
         localStorage.setItem('currentUser_encrypted', encryptedSession);
@@ -739,10 +898,12 @@ async function handleLogin(e) {
     closeAuthModal('loginModal');
     updateUIForLoggedInUser();
     
-    showNotification(`Welcome back, ${currentUser.name}!`, 'success');
-    
-    // Reset form
+    // Reset login form and hide account type selection
     document.getElementById('loginForm').reset();
+    document.getElementById('loginAccountTypeSelection').style.display = 'none';
+    
+    const accountTypeLabel = currentUser.accountType === 'searcher' ? 'Buyer/Renter' : 'Seller/Lister';
+    showNotification(`Welcome back, ${currentUser.name}! (${accountTypeLabel} account)`, 'success');
     
     // Redirect to dashboard after successful login
     setTimeout(() => {
@@ -770,11 +931,17 @@ function updateUIForLoggedInUser() {
     if (loginBtn) loginBtn.style.display = 'none';
     if (signupBtn) signupBtn.style.display = 'none';
     
-    // Show user menu and set username
+    // Show user menu and set username with account type badge
     const userMenu = document.getElementById('userMenu');
     const userName = document.getElementById('userName');
     if (userMenu) userMenu.style.display = 'block';
-    if (userName && currentUser) userName.textContent = currentUser.name;
+    if (userName && currentUser) {
+        const accountType = currentUser.accountType || 'searcher';
+        const badgeClass = accountType === 'searcher' ? 'searcher' : 'lister';
+        const badgeIcon = accountType === 'searcher' ? 'fa-search' : 'fa-home';
+        const badgeText = accountType === 'searcher' ? 'Buyer' : 'Seller';
+        userName.innerHTML = `${currentUser.name} <span class="user-type-badge ${badgeClass}"><i class="fas ${badgeIcon}"></i> ${badgeText}</span>`;
+    }
     
     // Pre-fill contact info in property form (only on index.html)
     const contactEmail = document.getElementById('contactEmail');

@@ -624,9 +624,166 @@
             </div>
         </div>
 
-        <!-- User Type Section -->
+        <!-- User Type Section (Registration Type - Read Only) -->
         <div class="profile-card">
             <h2><i class="fas fa-user-tag"></i> Account Type</h2>
+            <div id="accountTypeDisplay" class="account-type-display">
+                <!-- Will be filled by JavaScript based on user's registration -->
+            </div>
+            <p style="color: #666; font-size: 0.85rem; margin-top: 1rem;">
+                <i class="fas fa-info-circle"></i> Account type is set during registration. 
+                <a href="index.html" style="color: var(--primary-color);">Create a new account</a> to switch types.
+            </p>
+        </div>
+
+        <!-- Searcher-Specific Section (Only visible for Searchers/Buyers) -->
+        <div class="profile-card searcher-section" id="searcherSection" style="display: none;">
+            <h2><i class="fas fa-search"></i> Property Preferences</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Help us find properties that match your needs</p>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="preferredType"><i class="fas fa-home"></i> Property Type</label>
+                    <select id="preferredType">
+                        <option value="">Select type...</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="house">House</option>
+                        <option value="villa">Villa</option>
+                        <option value="plot">Plot/Land</option>
+                        <option value="commercial">Commercial</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="preferredPurpose"><i class="fas fa-key"></i> Purpose</label>
+                    <select id="preferredPurpose">
+                        <option value="">Select purpose...</option>
+                        <option value="buy">Buy</option>
+                        <option value="rent">Rent</option>
+                        <option value="both">Both</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="minBudget"><i class="fas fa-rupee-sign"></i> Min Budget</label>
+                    <input type="number" id="minBudget" placeholder="e.g., 5000000">
+                </div>
+                <div class="form-group">
+                    <label for="maxBudget"><i class="fas fa-rupee-sign"></i> Max Budget</label>
+                    <input type="number" id="maxBudget" placeholder="e.g., 10000000">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="preferredBedrooms"><i class="fas fa-bed"></i> Bedrooms Needed</label>
+                    <select id="preferredBedrooms">
+                        <option value="">Any</option>
+                        <option value="1">1 BHK</option>
+                        <option value="2">2 BHK</option>
+                        <option value="3">3 BHK</option>
+                        <option value="4">4+ BHK</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="preferredArea"><i class="fas fa-ruler-combined"></i> Min Area (sq ft)</label>
+                    <input type="number" id="preferredArea" placeholder="e.g., 1000">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="preferredLocations"><i class="fas fa-map-marker-alt"></i> Preferred Locations</label>
+                <input type="text" id="preferredLocations" placeholder="e.g., Bangalore, Mumbai, Hyderabad (comma separated)">
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-bell"></i> Notification Preferences</label>
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="notifyNewListings" checked> New listings matching preferences
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="notifyPriceDrops" checked> Price drops
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lister-Specific Section (Only visible for Listers/Sellers) -->
+        <div class="profile-card lister-section" id="listerSection" style="display: none;">
+            <h2><i class="fas fa-store"></i> Seller Profile</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">Complete your seller profile to list properties</p>
+            
+            <div class="form-group">
+                <label for="sellerType"><i class="fas fa-user-tie"></i> Seller Type</label>
+                <select id="sellerType">
+                    <option value="">Select type...</option>
+                    <option value="owner">Property Owner</option>
+                    <option value="agent">Real Estate Agent</option>
+                    <option value="builder">Builder/Developer</option>
+                    <option value="broker">Broker</option>
+                </select>
+            </div>
+            
+            <div class="form-group" id="companyNameGroup" style="display: none;">
+                <label for="companyName"><i class="fas fa-building"></i> Company/Agency Name</label>
+                <input type="text" id="companyName" placeholder="Your company or agency name">
+            </div>
+            
+            <div class="form-group" id="reraNumberGroup" style="display: none;">
+                <label for="reraNumber"><i class="fas fa-certificate"></i> RERA Registration Number</label>
+                <input type="text" id="reraNumber" placeholder="e.g., RERA123456789">
+                <p style="color: #666; font-size: 0.8rem; margin-top: 0.25rem;">Required for agents and builders in India</p>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="propertiesOwned"><i class="fas fa-layer-group"></i> Properties to List</label>
+                    <select id="propertiesOwned">
+                        <option value="">How many properties?</option>
+                        <option value="1">1 property</option>
+                        <option value="2-5">2-5 properties</option>
+                        <option value="6-10">6-10 properties</option>
+                        <option value="10+">More than 10</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="listingExperience"><i class="fas fa-history"></i> Listing Experience</label>
+                    <select id="listingExperience">
+                        <option value="">Select experience...</option>
+                        <option value="first-time">First time seller</option>
+                        <option value="occasional">Occasional seller</option>
+                        <option value="experienced">Experienced seller</option>
+                        <option value="professional">Professional (Agent/Builder)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="listingLocations"><i class="fas fa-map-marker-alt"></i> Property Locations</label>
+                <input type="text" id="listingLocations" placeholder="Cities where your properties are located (comma separated)">
+            </div>
+            
+            <div class="form-group">
+                <label><i class="fas fa-cog"></i> Listing Preferences</label>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="allowDirectContact" checked> Allow buyers to contact me directly
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="notifyEnquiries" checked> Email me when someone enquires
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="showPhoneOnListing"> Show phone number on listings
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Original User Type Section (for additional classification) -->
+        <div class="profile-card">
+            <h2><i class="fas fa-user-cog"></i> Profile Type</h2>
             <div class="user-type-selector">
                 <div class="user-type-option" data-type="individual">
                     <i class="fas fa-user"></i>

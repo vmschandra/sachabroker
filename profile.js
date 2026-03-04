@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load profile data
     loadProfileData();
     
+    // Display account type and show relevant sections
+    displayAccountType();
+    
     // Setup event listeners
     setupProfileEventListeners();
     
@@ -54,6 +57,165 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
 });
+
+// Display Account Type and show relevant sections
+function displayAccountType() {
+    if (!currentUser) return;
+    
+    const accountTypeDisplay = document.getElementById('accountTypeDisplay');
+    const searcherSection = document.getElementById('searcherSection');
+    const listerSection = document.getElementById('listerSection');
+    
+    if (!accountTypeDisplay) return;
+    
+    const accountType = currentUser.accountType || 'searcher';
+    const isVerified = currentUser.emailVerified || false;
+    
+    if (accountType === 'searcher') {
+        accountTypeDisplay.innerHTML = `
+            <div class="type-icon searcher">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="type-info">
+                <h3>Property Searcher (Buyer/Renter)</h3>
+                <p>You're looking for properties to buy or rent</p>
+            </div>
+            <div class="verified-badge ${isVerified ? '' : 'pending'}">
+                <i class="fas ${isVerified ? 'fa-check-circle' : 'fa-clock'}"></i>
+                ${isVerified ? 'Email Verified' : 'Pending Verification'}
+            </div>
+        `;
+        
+        // Show searcher-specific section
+        if (searcherSection) searcherSection.style.display = 'block';
+        if (listerSection) listerSection.style.display = 'none';
+        
+        // Load searcher preferences
+        loadSearcherPreferences();
+    } else {
+        accountTypeDisplay.innerHTML = `
+            <div class="type-icon lister">
+                <i class="fas fa-home"></i>
+            </div>
+            <div class="type-info">
+                <h3>Property Lister (Seller)</h3>
+                <p>You're listing properties for sale or rent</p>
+            </div>
+            <div class="verified-badge ${isVerified ? '' : 'pending'}">
+                <i class="fas ${isVerified ? 'fa-check-circle' : 'fa-clock'}"></i>
+                ${isVerified ? 'Email Verified' : 'Pending Verification'}
+            </div>
+        `;
+        
+        // Show lister-specific section
+        if (searcherSection) searcherSection.style.display = 'none';
+        if (listerSection) listerSection.style.display = 'block';
+        
+        // Load lister profile data
+        loadListerProfile();
+    }
+}
+
+// Load Searcher Preferences
+function loadSearcherPreferences() {
+    if (!currentUser) return;
+    
+    const prefsData = localStorage.getItem(`searcher_prefs_${currentUser.id}`);
+    if (!prefsData) return;
+    
+    try {
+        const prefs = JSON.parse(prefsData);
+        document.getElementById('preferredType').value = prefs.propertyType || '';
+        document.getElementById('preferredPurpose').value = prefs.purpose || '';
+        document.getElementById('minBudget').value = prefs.minBudget || '';
+        document.getElementById('maxBudget').value = prefs.maxBudget || '';
+        document.getElementById('preferredBedrooms').value = prefs.bedrooms || '';
+        document.getElementById('preferredArea').value = prefs.minArea || '';
+        document.getElementById('preferredLocations').value = prefs.locations || '';
+        document.getElementById('notifyNewListings').checked = prefs.notifyNewListings !== false;
+        document.getElementById('notifyPriceDrops').checked = prefs.notifyPriceDrops !== false;
+    } catch (e) {
+        console.error('Error loading searcher preferences:', e);
+    }
+}
+
+// Save Searcher Preferences
+function saveSearcherPreferences() {
+    if (!currentUser) return;
+    
+    const prefs = {
+        propertyType: document.getElementById('preferredType').value,
+        purpose: document.getElementById('preferredPurpose').value,
+        minBudget: document.getElementById('minBudget').value,
+        maxBudget: document.getElementById('maxBudget').value,
+        bedrooms: document.getElementById('preferredBedrooms').value,
+        minArea: document.getElementById('preferredArea').value,
+        locations: document.getElementById('preferredLocations').value,
+        notifyNewListings: document.getElementById('notifyNewListings').checked,
+        notifyPriceDrops: document.getElementById('notifyPriceDrops').checked
+    };
+    
+    localStorage.setItem(`searcher_prefs_${currentUser.id}`, JSON.stringify(prefs));
+}
+
+// Load Lister Profile
+function loadListerProfile() {
+    if (!currentUser) return;
+    
+    const listerData = localStorage.getItem(`lister_profile_${currentUser.id}`);
+    if (!listerData) return;
+    
+    try {
+        const profile = JSON.parse(listerData);
+        document.getElementById('sellerType').value = profile.sellerType || '';
+        document.getElementById('companyName').value = profile.companyName || '';
+        document.getElementById('reraNumber').value = profile.reraNumber || '';
+        document.getElementById('propertiesOwned').value = profile.propertiesOwned || '';
+        document.getElementById('listingExperience').value = profile.listingExperience || '';
+        document.getElementById('listingLocations').value = profile.listingLocations || '';
+        document.getElementById('allowDirectContact').checked = profile.allowDirectContact !== false;
+        document.getElementById('notifyEnquiries').checked = profile.notifyEnquiries !== false;
+        document.getElementById('showPhoneOnListing').checked = profile.showPhoneOnListing || false;
+        
+        // Show/hide conditional fields
+        updateListerConditionalFields(profile.sellerType);
+    } catch (e) {
+        console.error('Error loading lister profile:', e);
+    }
+}
+
+// Save Lister Profile
+function saveListerProfile() {
+    if (!currentUser) return;
+    
+    const profile = {
+        sellerType: document.getElementById('sellerType').value,
+        companyName: document.getElementById('companyName').value,
+        reraNumber: document.getElementById('reraNumber').value,
+        propertiesOwned: document.getElementById('propertiesOwned').value,
+        listingExperience: document.getElementById('listingExperience').value,
+        listingLocations: document.getElementById('listingLocations').value,
+        allowDirectContact: document.getElementById('allowDirectContact').checked,
+        notifyEnquiries: document.getElementById('notifyEnquiries').checked,
+        showPhoneOnListing: document.getElementById('showPhoneOnListing').checked
+    };
+    
+    localStorage.setItem(`lister_profile_${currentUser.id}`, JSON.stringify(profile));
+}
+
+// Update Lister Conditional Fields based on seller type
+function updateListerConditionalFields(sellerType) {
+    const companyNameGroup = document.getElementById('companyNameGroup');
+    const reraNumberGroup = document.getElementById('reraNumberGroup');
+    
+    if (sellerType === 'agent' || sellerType === 'builder' || sellerType === 'broker') {
+        if (companyNameGroup) companyNameGroup.style.display = 'block';
+        if (reraNumberGroup) reraNumberGroup.style.display = 'block';
+    } else {
+        if (companyNameGroup) companyNameGroup.style.display = 'none';
+        if (reraNumberGroup) reraNumberGroup.style.display = 'none';
+    }
+}
 
 function loadProfileData() {
     if (!currentUser) return;
@@ -158,6 +320,36 @@ function setupProfileEventListeners() {
     
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+    
+    // Seller type change listener (for conditional fields)
+    const sellerTypeEl = document.getElementById('sellerType');
+    if (sellerTypeEl) {
+        sellerTypeEl.addEventListener('change', function() {
+            updateListerConditionalFields(this.value);
+        });
+    }
+    
+    // Auto-save searcher preferences on change
+    const searcherInputs = ['preferredType', 'preferredPurpose', 'minBudget', 'maxBudget', 
+                           'preferredBedrooms', 'preferredArea', 'preferredLocations',
+                           'notifyNewListings', 'notifyPriceDrops'];
+    searcherInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('change', saveSearcherPreferences);
+        }
+    });
+    
+    // Auto-save lister profile on change
+    const listerInputs = ['sellerType', 'companyName', 'reraNumber', 'propertiesOwned',
+                         'listingExperience', 'listingLocations', 'allowDirectContact',
+                         'notifyEnquiries', 'showPhoneOnListing'];
+    listerInputs.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('change', saveListerProfile);
+        }
+    });
 }
 
 function handleProfilePictureUpload(e) {
