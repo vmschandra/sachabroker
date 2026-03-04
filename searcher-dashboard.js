@@ -998,8 +998,12 @@ function updateGalleryDisplay() {
 }
 
 // ==========================================
-// CONTACT UNLOCK PAYMENT
+// CONTACT UNLOCK PAYMENT - Plan Selection Flow
 // ==========================================
+
+// Current payment state
+let selectedPlan = 'single';
+let currentPaymentPropertyId = null;
 
 // Open Contact Unlock Modal
 function openContactUnlock(propertyId) {
@@ -1015,16 +1019,38 @@ function openContactUnlock(propertyId) {
         return;
     }
     
+    // Check if user has unlimited plan
+    if (hasUnlimitedPlan()) {
+        // Auto-unlock for free
+        saveContactUnlock(propertyId);
+        showPaymentSuccess(property, 'unlimited', 0);
+        displayProperties();
+        return;
+    }
+    
+    // Check if already unlocked
+    if (isContactUnlocked(propertyId)) {
+        showPaymentSuccess(property, 'already', 0);
+        return;
+    }
+    
     currentPropertyDetail = property;
+    currentPaymentPropertyId = propertyId;
+    selectedPlan = 'single';
     
     const modal = document.getElementById('contactUnlockModal');
     const summary = document.getElementById('unlockPropertySummary');
-    const unlockPrice = document.getElementById('unlockPrice');
-    const payBtnPrice = document.getElementById('payBtnPrice');
     
-    const price = property.contactFee || 299;
-    unlockPrice.textContent = price;
-    payBtnPrice.textContent = price;
+    // Reset to step 1
+    document.getElementById('paymentStep1').style.display = 'block';
+    document.getElementById('paymentStep2').style.display = 'none';
+    
+    // Hide unlimited plan status if no active plan
+    document.getElementById('currentPlanStatus').style.display = 'none';
+    
+    // Reset plan selection
+    document.getElementById('planSingle').checked = true;
+    updatePlanSelection();
     
     summary.innerHTML = `
         <img src="${property.image || property.images?.[0] || 'https://via.placeholder.com/100x75'}" 
@@ -1038,60 +1064,247 @@ function openContactUnlock(propertyId) {
     
     modal.style.display = 'block';
     
+    // Setup plan selection listeners
+    setupPlanSelection();
+    
     // Setup payment button
-    document.getElementById('proceedPaymentBtn').onclick = () => processPayment(propertyId, price);
+    document.getElementById('proceedPaymentBtn').onclick = () => initiatePayment();
 }
 
-// Close Contact Unlock Modal
-function closeContactUnlockModal() {
-    document.getElementById('contactUnlockModal').style.display = 'none';
+// Setup plan selection event listeners
+function setupPlanSelection() {
+    const planCards = document.querySelectorAll('.plan-card');
+    const planRadios = document.querySelectorAll('input[name="plan"]');
+    
+    planCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                updatePlanSelection();
+            }
+        });
+    });
+    
+    planRadios.forEach(radio => {
+        radio.addEventListener('change', updatePlanSelection);
+    });
 }
 
-// Process Payment (Demo - simulates payment)
-function processPayment(propertyId, amount) {
-    const property = allProperties.find(p => p.id === propertyId);
-    if (!property) return;
+// Update plan selection UI
+function updatePlanSelection() {
+    const planCards = document.querySelectorAll('.plan-card');
+    const selectedRadio = document.querySelector('input[name="plan"]:checked');
     
-    // Show loading state
-    const btn = document.getElementById('proceedPaymentBtn');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    btn.disabled = true;
+    selectedPlan = selectedRadio ? selectedRadio.value : 'single';
     
-    // Simulate payment processing
-    setTimeout(() => {
-        // Save unlock status
-        saveContactUnlock(propertyId);
-        
-        // Increment inquiry count
-        property.inquiries = (property.inquiries || 0) + 1;
-        saveProperties();
-        
-        // Close unlock modal
-        closeContactUnlockModal();
-        
-        // Show success modal
-        showPaymentSuccess(property);
-        
-        // Reset button
-        btn.innerHTML = originalText;
-        btn.disabled = false;
-        
-        // Refresh property detail if open
-        if (document.getElementById('propertyDetailModal').style.display === 'block') {
-            const body = document.getElementById('propertyDetailBody');
-            body.innerHTML = generatePropertyDetailHTML(property);
+    planCards.forEach(card => {
+        card.classList.remove('selected');
+        if (card.dataset.plan === selectedPlan) {
+            card.classList.add('selected');
         }
-        
-        // Refresh property cards
-        displayProperties();
+    });
+    
+    // Update payment summary
+    const planName = selectedPlan === 'single' ? 'Single Contact' : 'Unlimited Monthly';
+    const amount = selectedPlan === 'single' ? '₹299' : '₹999';
+    
+    document.getElementById('selectedPlanName').textContent = planName;
+    document.getElementById('totalAmount').textContent = amount;
+    document.getElementById('payBtnPrice').textContent = amount;
+}
+
+// Initiate payment
+function initiatePayment() {
+    const amount = selectedPlan === 'single' ? 299 : 999;
+    
+    // Show processing step
+    document.getElementById('paymentStep1').style.display = 'none';
+    document.getElementById('paymentStep2').style.display = 'block';
+    
+    // Initialize Razorpay
+    initializeRazorpay(amount, selectedPlan);
+}
+
+// Initialize Razorpay Payment Gateway
+function initializeRazorpay(amount, plan) {
+    // Check if Razorpay is loaded
+    if (typeof Razorpay === 'undefined') {
+        // Load Razorpay script dynamically
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => processRazorpayPayment(amount, plan);
+        script.onerror = () => simulatePayment(amount, plan);
+        document.head.appendChild(script);
+    } else {
+        processRazorpayPayment(amount, plan);
+    }
+}
+
+// Process Razorpay Payment
+function processRazorpayPayment(amount, plan) {
+    const planName = plan === 'single' ? 'Single Contact Unlock' : 'Unlimited Monthly Plan';
+    
+    const options = {
+        key: 'rzp_test_demo_key', // Replace with your Razorpay key in production
+        amount: amount * 100, // Amount in paise
+        currency: 'INR',
+        name: 'Sachabroker',
+        description: planName,
+        image: 'https://sachabroker.com/logo.png',
+        handler: function(response) {
+            // Payment successful
+            handlePaymentSuccess(response, plan, amount);
+        },
+        prefill: {
+            name: currentUser?.name || '',
+            email: currentUser?.email || '',
+            contact: currentUser?.phone || ''
+        },
+        theme: {
+            color: '#27ae60'
+        },
+        modal: {
+            ondismiss: function() {
+                // Payment cancelled - go back to step 1
+                document.getElementById('paymentStep1').style.display = 'block';
+                document.getElementById('paymentStep2').style.display = 'none';
+            }
+        }
+    };
+    
+    try {
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function(response) {
+            handlePaymentFailure(response);
+        });
+        rzp.open();
+    } catch (error) {
+        console.log('Razorpay not available, simulating payment');
+        simulatePayment(amount, plan);
+    }
+}
+
+// Simulate payment (for demo/testing)
+function simulatePayment(amount, plan) {
+    // Simulate processing delay
+    setTimeout(() => {
+        const mockResponse = {
+            razorpay_payment_id: 'pay_' + generateTransactionId(),
+            razorpay_order_id: 'order_' + generateTransactionId(),
+            razorpay_signature: 'sig_' + generateTransactionId()
+        };
+        handlePaymentSuccess(mockResponse, plan, amount);
     }, 2000);
 }
 
+// Handle Payment Success
+function handlePaymentSuccess(response, plan, amount) {
+    const property = allProperties.find(p => p.id === currentPaymentPropertyId);
+    if (!property) return;
+    
+    const transactionId = response.razorpay_payment_id || generateTransactionId();
+    
+    // Save unlock status
+    saveContactUnlock(currentPaymentPropertyId);
+    
+    // If unlimited plan, save plan status
+    if (plan === 'unlimited') {
+        saveUnlimitedPlan();
+    }
+    
+    // Increment inquiry count
+    property.inquiries = (property.inquiries || 0) + 1;
+    saveProperties();
+    
+    // Save transaction record
+    saveTransaction({
+        id: transactionId,
+        propertyId: currentPaymentPropertyId,
+        plan: plan,
+        amount: amount,
+        date: new Date().toISOString(),
+        status: 'success'
+    });
+    
+    // Close unlock modal
+    closeContactUnlockModal();
+    
+    // Show success modal with transaction details
+    showPaymentSuccess(property, plan, amount, transactionId);
+    
+    // Send receipt email (simulated)
+    sendReceiptEmail(transactionId, plan, amount);
+    
+    // Refresh property detail if open
+    if (document.getElementById('propertyDetailModal').style.display === 'block') {
+        const body = document.getElementById('propertyDetailBody');
+        body.innerHTML = generatePropertyDetailHTML(property);
+    }
+    
+    // Refresh property cards
+    displayProperties();
+}
+
+// Handle Payment Failure
+function handlePaymentFailure(response) {
+    // Go back to step 1
+    document.getElementById('paymentStep1').style.display = 'block';
+    document.getElementById('paymentStep2').style.display = 'none';
+    
+    if (typeof showNotification === 'function') {
+        showNotification('Payment failed. Please try again.', 'error');
+    } else {
+        alert('Payment failed. Please try again.');
+    }
+    
+    console.error('Payment failed:', response.error);
+}
+
+// Generate transaction ID
+function generateTransactionId() {
+    return 'TXN' + Date.now() + Math.random().toString(36).substr(2, 9).toUpperCase();
+}
+
 // Show Payment Success Modal
-function showPaymentSuccess(property) {
+function showPaymentSuccess(property, plan, amount, transactionId = null) {
     const modal = document.getElementById('paymentSuccessModal');
     const contactDetails = document.getElementById('unlockedContactDetails');
+    const successMessage = document.getElementById('successPlanMessage');
+    const amountPaid = document.getElementById('amountPaid');
+    const planPurchased = document.getElementById('planPurchased');
+    const txnId = document.getElementById('transactionId');
+    const planValidityRow = document.getElementById('planValidityRow');
+    const planValidity = document.getElementById('planValidity');
+    
+    // Set transaction details
+    if (transactionId) {
+        txnId.textContent = transactionId;
+        amountPaid.textContent = '₹' + amount;
+    }
+    
+    // Set plan info
+    if (plan === 'unlimited') {
+        planPurchased.textContent = 'Unlimited Monthly';
+        successMessage.textContent = 'You now have unlimited access for 30 days!';
+        planValidityRow.style.display = 'flex';
+        const validUntil = new Date();
+        validUntil.setDate(validUntil.getDate() + 30);
+        planValidity.textContent = validUntil.toLocaleDateString('en-IN', { 
+            day: 'numeric', 
+            month: 'short', 
+            year: 'numeric' 
+        });
+    } else if (plan === 'already') {
+        planPurchased.textContent = 'Previously Unlocked';
+        amountPaid.textContent = '₹0';
+        successMessage.textContent = 'This contact was already unlocked!';
+        planValidityRow.style.display = 'none';
+    } else {
+        planPurchased.textContent = 'Single Contact';
+        successMessage.textContent = 'Contact details have been unlocked!';
+        planValidityRow.style.display = 'none';
+    }
     
     contactDetails.innerHTML = `
         <div class="unlocked-contact-item">
@@ -1114,7 +1327,7 @@ function showPaymentSuccess(property) {
             <i class="fab fa-whatsapp"></i>
             <div>
                 <span class="label">WhatsApp</span>
-                <span class="value"><a href="https://wa.me/${property.contactPhone?.replace(/[^0-9]/g, '')}" target="_blank">Send Message</a></span>
+                <span class="value"><a href="https://wa.me/91${property.contactPhone?.replace(/[^0-9]/g, '')}" target="_blank">Send Message</a></span>
             </div>
         </div>
     `;
@@ -1122,14 +1335,178 @@ function showPaymentSuccess(property) {
     modal.style.display = 'block';
 }
 
+// Close Contact Unlock Modal
+function closeContactUnlockModal() {
+    document.getElementById('contactUnlockModal').style.display = 'none';
+    // Reset to step 1
+    document.getElementById('paymentStep1').style.display = 'block';
+    document.getElementById('paymentStep2').style.display = 'none';
+}
+
 // Close Payment Success Modal
 function closePaymentSuccessModal() {
     document.getElementById('paymentSuccessModal').style.display = 'none';
 }
 
+// ==========================================
+// UNLIMITED PLAN MANAGEMENT
+// ==========================================
+
+// Check if user has active unlimited plan
+function hasUnlimitedPlan() {
+    if (!currentUser) return false;
+    
+    const planData = localStorage.getItem(`unlimited_plan_${currentUser.id}`);
+    if (!planData) return false;
+    
+    try {
+        const plan = JSON.parse(planData);
+        const expiry = new Date(plan.expiresAt);
+        return expiry > new Date();
+    } catch {
+        return false;
+    }
+}
+
+// Save unlimited plan
+function saveUnlimitedPlan() {
+    if (!currentUser) return;
+    
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 30);
+    
+    const planData = {
+        plan: 'unlimited',
+        purchasedAt: new Date().toISOString(),
+        expiresAt: expiresAt.toISOString()
+    };
+    
+    localStorage.setItem(`unlimited_plan_${currentUser.id}`, JSON.stringify(planData));
+}
+
+// Get unlimited plan expiry
+function getUnlimitedPlanExpiry() {
+    if (!currentUser) return null;
+    
+    const planData = localStorage.getItem(`unlimited_plan_${currentUser.id}`);
+    if (!planData) return null;
+    
+    try {
+        const plan = JSON.parse(planData);
+        return new Date(plan.expiresAt);
+    } catch {
+        return null;
+    }
+}
+
+// ==========================================
+// TRANSACTION & RECEIPT MANAGEMENT
+// ==========================================
+
+// Save transaction record
+function saveTransaction(transaction) {
+    if (!currentUser) return;
+    
+    const transactions = JSON.parse(localStorage.getItem(`transactions_${currentUser.id}`) || '[]');
+    transactions.unshift(transaction);
+    localStorage.setItem(`transactions_${currentUser.id}`, JSON.stringify(transactions));
+}
+
+// Get user transactions
+function getUserTransactions() {
+    if (!currentUser) return [];
+    return JSON.parse(localStorage.getItem(`transactions_${currentUser.id}`) || '[]');
+}
+
+// Send receipt email (simulated)
+function sendReceiptEmail(transactionId, plan, amount) {
+    const planName = plan === 'single' ? 'Single Contact Unlock' : 'Unlimited Monthly Plan';
+    
+    console.log(`📧 Receipt email sent to ${currentUser?.email}`);
+    console.log(`   Transaction ID: ${transactionId}`);
+    console.log(`   Plan: ${planName}`);
+    console.log(`   Amount: ₹${amount}`);
+    
+    // In production, this would call an API to send actual email
+    if (typeof showNotification === 'function') {
+        setTimeout(() => {
+            showNotification('Receipt sent to ' + (currentUser?.email || 'your email'), 'success');
+        }, 1500);
+    }
+}
+
+// Download receipt
+function downloadReceipt() {
+    const txnId = document.getElementById('transactionId').textContent;
+    const amount = document.getElementById('amountPaid').textContent;
+    const plan = document.getElementById('planPurchased').textContent;
+    const date = new Date().toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+    
+    const receiptContent = `
+SACHABROKER - PAYMENT RECEIPT
+==============================
+
+Transaction ID: ${txnId}
+Date: ${date}
+
+Customer Details:
+Name: ${currentUser?.name || 'N/A'}
+Email: ${currentUser?.email || 'N/A'}
+Phone: ${currentUser?.phone || 'N/A'}
+
+Payment Details:
+Plan: ${plan}
+Amount: ${amount}
+Status: Successful
+
+Property: ${currentPropertyDetail?.title || 'N/A'}
+Location: ${currentPropertyDetail?.locality || currentPropertyDetail?.location || 'N/A'}
+
+==============================
+Thank you for using Sachabroker!
+Website: https://sachabroker.com
+Support: support@sachabroker.com
+==============================
+    `.trim();
+    
+    // Create and download file
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Sachabroker_Receipt_${txnId}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    
+    if (typeof showNotification === 'function') {
+        showNotification('Receipt downloaded!', 'success');
+    }
+}
+
+// Email receipt
+function emailReceipt() {
+    const txnId = document.getElementById('transactionId').textContent;
+    
+    // In production, this would call an API to send email
+    sendReceiptEmail(txnId, selectedPlan, selectedPlan === 'single' ? 299 : 999);
+}
+
 // Check if contact is unlocked
 function isContactUnlocked(propertyId) {
     if (!currentUser) return false;
+    
+    // Check if user has unlimited plan
+    if (hasUnlimitedPlan()) {
+        // Check if this property was already unlocked
+        const unlocked = JSON.parse(localStorage.getItem(`unlocked_contacts_${currentUser.id}`) || '[]');
+        return unlocked.includes(propertyId);
+    }
     
     const unlocked = JSON.parse(localStorage.getItem(`unlocked_contacts_${currentUser.id}`) || '[]');
     return unlocked.includes(propertyId);

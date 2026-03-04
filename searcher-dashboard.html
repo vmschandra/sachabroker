@@ -268,47 +268,132 @@
         </div>
     </div>
 
-    <!-- Contact Unlock Modal -->
+    <!-- Contact Unlock Modal with Payment Plans -->
     <div id="contactUnlockModal" class="modal contact-unlock-modal">
-        <div class="modal-content contact-unlock-content">
+        <div class="modal-content contact-unlock-content payment-modal-content">
             <span class="close" onclick="closeContactUnlockModal()">&times;</span>
-            <div class="unlock-header">
-                <i class="fas fa-lock"></i>
-                <h2>Unlock Contact Details</h2>
-            </div>
-            <div class="unlock-body">
-                <div class="property-summary" id="unlockPropertySummary">
-                    <!-- Property summary will be shown here -->
+            
+            <!-- Step 1: Plan Selection -->
+            <div id="paymentStep1" class="payment-step">
+                <div class="unlock-header">
+                    <i class="fas fa-unlock-alt"></i>
+                    <h2>Unlock Contact Details</h2>
+                    <p>Choose a plan that suits you</p>
                 </div>
-                <div class="unlock-benefits">
-                    <h4>What you'll get:</h4>
-                    <ul>
-                        <li><i class="fas fa-phone"></i> Owner's Phone Number</li>
-                        <li><i class="fas fa-envelope"></i> Email Address</li>
-                        <li><i class="fab fa-whatsapp"></i> WhatsApp Contact</li>
-                        <li><i class="fas fa-clock"></i> Best time to contact</li>
-                    </ul>
-                </div>
-                <div class="unlock-price">
-                    <span class="price-label">Unlock Price</span>
-                    <span class="price-amount">₹<span id="unlockPrice">299</span></span>
-                    <span class="price-note">One-time payment</span>
-                </div>
-                <div class="payment-methods">
-                    <h4>Pay securely with:</h4>
-                    <div class="payment-icons">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/200px-UPI-Logo-vector.svg.png" alt="UPI" title="UPI">
-                        <i class="fab fa-cc-visa" title="Visa"></i>
-                        <i class="fab fa-cc-mastercard" title="Mastercard"></i>
-                        <i class="fab fa-google-pay" title="Google Pay"></i>
+                
+                <div class="unlock-body">
+                    <!-- Property Summary -->
+                    <div class="property-summary" id="unlockPropertySummary">
+                        <!-- Property summary will be shown here -->
                     </div>
+                    
+                    <!-- Plan Selection -->
+                    <div class="plan-selection">
+                        <h3>Select Your Plan</h3>
+                        
+                        <!-- Single Contact Plan -->
+                        <div class="plan-card" id="singlePlan" data-plan="single" data-amount="299">
+                            <div class="plan-badge">Popular</div>
+                            <div class="plan-header">
+                                <i class="fas fa-user"></i>
+                                <h4>Single Contact</h4>
+                            </div>
+                            <div class="plan-price">
+                                <span class="currency">₹</span>
+                                <span class="amount">299</span>
+                                <span class="period">one-time</span>
+                            </div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> Unlock this contact only</li>
+                                <li><i class="fas fa-check"></i> Phone number</li>
+                                <li><i class="fas fa-check"></i> Email address</li>
+                                <li><i class="fas fa-check"></i> WhatsApp contact</li>
+                                <li><i class="fas fa-times"></i> Other contacts not included</li>
+                            </ul>
+                            <div class="plan-select">
+                                <input type="radio" name="plan" id="planSingle" value="single" checked>
+                                <label for="planSingle">Select Plan</label>
+                            </div>
+                        </div>
+                        
+                        <!-- Unlimited Plan -->
+                        <div class="plan-card premium" id="unlimitedPlan" data-plan="unlimited" data-amount="999">
+                            <div class="plan-badge best-value">Best Value</div>
+                            <div class="plan-header">
+                                <i class="fas fa-crown"></i>
+                                <h4>Unlimited Monthly</h4>
+                            </div>
+                            <div class="plan-price">
+                                <span class="currency">₹</span>
+                                <span class="amount">999</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <div class="savings-badge">
+                                <i class="fas fa-bolt"></i> Save up to 70%
+                            </div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> <strong>Unlimited contacts</strong></li>
+                                <li><i class="fas fa-check"></i> All phone numbers</li>
+                                <li><i class="fas fa-check"></i> All email addresses</li>
+                                <li><i class="fas fa-check"></i> All WhatsApp contacts</li>
+                                <li><i class="fas fa-check"></i> Valid for 30 days</li>
+                                <li><i class="fas fa-check"></i> Priority support</li>
+                            </ul>
+                            <div class="plan-select">
+                                <input type="radio" name="plan" id="planUnlimited" value="unlimited">
+                                <label for="planUnlimited">Select Plan</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User's Current Plan Status -->
+                    <div id="currentPlanStatus" class="current-plan-status" style="display: none;">
+                        <i class="fas fa-crown"></i>
+                        <span>You have an active Unlimited Plan! Contact will be unlocked for FREE.</span>
+                    </div>
+                    
+                    <!-- Payment Summary -->
+                    <div class="payment-summary">
+                        <div class="summary-row">
+                            <span>Selected Plan:</span>
+                            <span id="selectedPlanName">Single Contact</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Amount:</span>
+                            <span id="totalAmount">₹299</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Methods -->
+                    <div class="payment-methods">
+                        <h4>Pay securely with:</h4>
+                        <div class="payment-icons">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/200px-UPI-Logo-vector.svg.png" alt="UPI" title="UPI">
+                            <i class="fab fa-cc-visa" title="Visa"></i>
+                            <i class="fab fa-cc-mastercard" title="Mastercard"></i>
+                            <i class="fab fa-google-pay" title="Google Pay"></i>
+                            <i class="fas fa-mobile-alt" title="PhonePe"></i>
+                        </div>
+                    </div>
+                    
+                    <button id="proceedPaymentBtn" class="btn btn-success btn-large btn-block">
+                        <i class="fas fa-lock"></i> Proceed to Pay <span id="payBtnPrice">₹299</span>
+                    </button>
+                    
+                    <p class="secure-note">
+                        <i class="fas fa-shield-alt"></i> 100% Secure Payment | Powered by Razorpay
+                    </p>
                 </div>
-                <button id="proceedPaymentBtn" class="btn btn-success btn-large btn-block">
-                    <i class="fas fa-lock-open"></i> Proceed to Pay ₹<span id="payBtnPrice">299</span>
-                </button>
-                <p class="secure-note">
-                    <i class="fas fa-shield-alt"></i> 100% Secure Payment | Money-back guarantee
-                </p>
+            </div>
+            
+            <!-- Step 2: Processing -->
+            <div id="paymentStep2" class="payment-step" style="display: none;">
+                <div class="processing-payment">
+                    <div class="processing-spinner"></div>
+                    <h3>Processing Payment...</h3>
+                    <p>Please wait while we process your payment</p>
+                    <p class="processing-note">Do not close this window</p>
+                </div>
             </div>
         </div>
     </div>
@@ -316,16 +401,48 @@
     <!-- Payment Success Modal -->
     <div id="paymentSuccessModal" class="modal payment-success-modal">
         <div class="modal-content payment-success-content">
+            <span class="close" onclick="closePaymentSuccessModal()">&times;</span>
             <div class="success-animation">
                 <i class="fas fa-check-circle"></i>
             </div>
             <h2>Payment Successful!</h2>
-            <p>Contact details have been unlocked</p>
+            <p id="successPlanMessage">Contact details have been unlocked</p>
+            
+            <!-- Receipt Info -->
+            <div class="receipt-info">
+                <div class="receipt-row">
+                    <span>Transaction ID:</span>
+                    <span id="transactionId">TXN123456789</span>
+                </div>
+                <div class="receipt-row">
+                    <span>Amount Paid:</span>
+                    <span id="amountPaid">₹299</span>
+                </div>
+                <div class="receipt-row">
+                    <span>Plan:</span>
+                    <span id="planPurchased">Single Contact</span>
+                </div>
+                <div class="receipt-row" id="planValidityRow" style="display: none;">
+                    <span>Valid Until:</span>
+                    <span id="planValidity">-</span>
+                </div>
+            </div>
+            
             <div class="unlocked-contact" id="unlockedContactDetails">
                 <!-- Contact details will be shown here -->
             </div>
-            <button class="btn btn-primary" onclick="closePaymentSuccessModal()">
-                Done
+            
+            <div class="receipt-actions">
+                <button class="btn btn-outline" onclick="downloadReceipt()">
+                    <i class="fas fa-download"></i> Download Receipt
+                </button>
+                <button class="btn btn-outline" onclick="emailReceipt()">
+                    <i class="fas fa-envelope"></i> Email Receipt
+                </button>
+            </div>
+            
+            <button class="btn btn-primary btn-large" onclick="closePaymentSuccessModal()">
+                <i class="fas fa-check"></i> Done
             </button>
         </div>
     </div>
